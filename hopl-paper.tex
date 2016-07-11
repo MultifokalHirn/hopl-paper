@@ -1,54 +1,63 @@
-% This is LLNCS.DOC the documentation file of
-% the LaTeX2e class from Springer-Verlag
-% for Lecture Notes in Computer Science, version 2.4
-\documentclass{llncs}
+\documentclass[oribibl]{llncs}
+\usepackage[utf8]{inputenc}
 \usepackage{llncsdoc}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+%
+\author{Lennard Wolf \\
+        lennard.wolf@student.hpi.de}
+\institute{ Hasso Plattner Institute \\
+            Prof.-Dr.-Helmert-Straße 2-3 \\
+            14482 Potsdam \\
+            Germany}
+\title{A Structuralist View on Object-Oriented \\ Thought Paradigms by Employment of CLOS Basics}
+\date{\today}
 %
 \begin{document}
-\markboth{\LaTeXe{} Class for Lecture Notes in Computer
-Science}{\LaTeXe{} Class for Lecture Notes in Computer Science}
+\markboth{Computing Primes in Parallel Using the Actor Model}{Computing Primes in Parallel Using the Actor Model}
 \thispagestyle{empty}
-\begin{flushleft}
-\LARGE\bfseries Instructions for Authors\\
-Coding with \LaTeX\\[2cm]
-\end{flushleft}
-\rule{\textwidth}{1pt}
-\vspace{2pt}
-\begin{flushright}
-\Huge
-\begin{tabular}{@{}l}
-\LaTeXe{} Class\\
-for Lecture Notes\\
-in Computer Science\\[6pt]
-{\Large Version 2.4}
-\end{tabular}
-\end{flushright}
-\rule{\textwidth}{1pt}
 \vfill
-%\begin{flushleft}
-%\large\itshape
-%\begin{tabular}{@{}l}
-%{\Large\upshape\bfseries Springer}\\[8pt]
-%Berlin\enspace Heidelberg\enspace New\kern0.1em York\\[5pt]
-%Barcelona\enspace Budapest\enspace Hong\kern0.2em Kong\\[5pt]
-%London\enspace Milan\enspace Paris\enspace\\[5pt]
-%Santa\kern0.2em Clara\enspace Singapore\enspace Tokyo
-%\end{tabular}
-%\end{flushleft}
-\newpage
-
 
 %
-\newpage
-\tableofcontents
-\newpage
+\maketitle
+%
+\begin{abstract}
+We did a whole buncha stuff
+\end{abstract}
 %
 \section{Introduction}
-%
 
-%
-\section{How to Proceed}
-
-\bibauthoryear
-%
+% Topic / Domain
+
+
+% Problem
+
+
+% Contribution
+
+
+% Outline
+The following is a summary of each section. In section...
+
+\section{Context}
+\label{sec:context}
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/example.jpg}
+    \caption{Picture of how we propose finding prime numbers using the actor model. The keyword \texttt{self()} denotes the actor issuing the computation.}
+    \label{fig:computing_primes}
+\end{figure}
+
+\section{Conclusion}
+Write me pl0x
+
+\newpage
+\nocite{*}
+\bibliographystyle{splncs}
+\bibliography{parallel-primes}
+
 \end{document}
