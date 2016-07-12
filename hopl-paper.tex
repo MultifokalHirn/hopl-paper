@@ -71,9 +71,9 @@ The following is a summary of each section. In section...
 
 \section{Context}
 \label{sec:context}
-A "solid" solution to the problem introduced in Section \ref{sec:problem} would be to use the \emph{Common Lisp Object System} (CLOS), an object system that extends Common Lisp\footnote{\url{https://common-lisp.net}, accessed: XXXXXX} to support object-orientation. \cite{CLOSOverview} However to understand how it could be employed and why it would be "a good idea" to do so, some background information will need to be provided first.
+A "solid" solution to the problem introduced in Section \ref{sec:problem} would be to use the \emph{Common Lisp Object System} (CLOS), an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: XXXXXX} providing "full" object-orientation. \cite{CLOSOverview} However to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
 
-In this Section we will hence start out by introduce the general ideas behind object-orientation as well as the programming language Lisp, and then we will introduce the three main concepts that make CLOS, an for Lisp, unique. Afterwards an overview of the history of CLOS will be provided to better understand its origins.
+In this Section we will hence start out by introducing the general ideas behind object-orientated programming languages, as well as the language Lisp, which is followed by a description of the three main concepts that make CLOS unique. An overview of the history of CLOS will be provided thereafter, so as to better understand its origins and historical context.
 
 \subsection{Object-Orientated Languages}
 \label{sec:oo}
@@ -87,38 +87,46 @@ An \emph{object-orientated} programming language is one that has these three con
 
 Stemming from the term \textbf{Lis}t \textbf{P}rocessor, Lisp is a programming language in which \emph{everything is a list}. This means that there is \emph{no discernment between data and code}. Hence an expression such as \texttt{(plus 3 4)} is without context nothing more than a "meaningless" listing of the "meaningless" expressions \texttt{plus}, \texttt{3}, and \texttt{4}. An expression like that only gets its meaning from an \emph{evaluation} by the interpreter which considers it in a certain context. In such a context the expression \texttt{plus} could be a function to add the arguments it is given, but that is entirely arbitrary. 
 
-Common Lisp is a standardized version of Lisp which provides certain data types and operations. But this type system can be extended through the use of \emph{macros}, which let developers give meaning to expressions. This feature of Lisp makes it "easy" to create \emph{Domain Specific Languages}\footnote{XXXX whats an DSL??}. \cite{XXX} They also form the basis of CLOS which in its entirety consists of 8 macros and 33 functions.
+Common Lisp is a standardized version of Lisp which provides certain data types and operations. But this type system can be extended through the use of \emph{macros}, which let developers give meaning to expressions. This feature of Lisp makes it "easy" to create \emph{Domain Specific Languages}\footnote{XXXX Link to or explain DSL}. \cite{XXX} They also form the basis of CLOS which in its entirety consists of 8 macros and 33 functions.
 
-\begin{itemize}
-\item explain Macros in detail?
-\end{itemize}
 
+\textbf{explain Macros in detail?}
+
+%reasoning why before concepts: the loops and s.o. are introduced which are needed later on
 
 \subsection{History of CLOS}
 \label{sec:history}
 
 \begin{itemize}
-\item Many implementations (“Tower of Babel” situation) (Flavors, CommonLoops)
-\item 1986: Workgroup of different researchers from Xerox PARC (CommonLoops) and Symbolic Inc. (New Flavors) worked on it together 
-\item CLOS: System built on top of Common Lisp
-\item meta-object protocol - was das
+\item object orientation became desirable (cite), thus many attempts at oo built on top of Common (?) Lisp were made
+\item these many implementations caused “Tower of Babel” situation (Flavors, CommonLoops, others?)
+\item 1986: Workgroup of different researchers from Xerox PARC (CommonLoops) and Symbolic Inc. (New Flavors) worked on it together to standardize just like CL
+\item meta-object protocol - explanation?
 \item CLOS is portable to different LISP implementations
 \end{itemize}
+
 
 \subsection{Main Concepts}
 \label{sec:concepts}
 
-\subsubsection{Generic Functions}
-\label{sec:genfun}
-blablablablablablablablablablablabla
+CLOS, being an early (?) implementation of object-orientation, comprises concepts that are rather uncommon in modern object-orientated languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are. \cite{XXX}
+
+\textbf{Explain Syntax Basics first? Or do this through Implementation later?}
 
 \subsubsection{Multiple Inheritance}
 \label{sec:mulinh}
 blablablablablablablablablablablabla
 
+\subsubsection{Generic Functions}
+\label{sec:genfun}
+blablablablablablablablablablablabla
+
 \subsubsection{Method Combination}
 \label{sec:metcom}
 blablablablablablablablablablablabla
+
+\textbf{Put visualisations together!}
+
 
 %\begin{figure}[ht]
 %    \centering
@@ -126,6 +134,7 @@ blablablablablablablablablablablabla
 %    \caption{test}
 %    \label{fig:computing_primes}
 %\end{figure}
+
 
 
 \section{Approach}
