@@ -12,11 +12,14 @@
             Prof.-Dr.-Helmert-Straße 2-3 \\
             14482 Potsdam \\
             Germany}
-\title{A Structuralist View on Object-Oriented \\ Thought Paradigms by Employment of CLOS}
+\title{Describing Dynamic Organizational Structures \\
+ through the Common Lisp Object System}
 \date{\today}
 %
 \begin{document}
-\markboth{A Structuralist View on Object-Oriented \\ Thought Paradigms by Employment of CLOS}{A Structuralist View on Object-Oriented \\ Thought Paradigms by Employment of CLOS}
+\markboth{Describing Dynamic Organizational Structures \\
+ through the Common Lisp Object System}{Describing Dynamic Organizational Structures \\
+ through the Common Lisp Object System}
 \thispagestyle{empty}
 \vfill
 
@@ -24,10 +27,22 @@
 \maketitle
 %
 \begin{abstract}
-A Structuralist View on Object-Oriented Thought Paradigms by Employment of CLOS
+Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System
 \end{abstract}
 %
+
+
+
+
+
 \section{Introduction}
+
+\textbf{My notations}
+
+\begin{itemize}
+\item "term" : wording unsure
+\end{itemize}
+
 
 % Topic / Domain
 
@@ -41,35 +56,41 @@ A Structuralist View on Object-Oriented Thought Paradigms by Employment of CLOS
 % Outline
 The following is a summary of each section. In section...
 
-\section{Context}
-\label{sec:context}
-In this Section we will give an overview of the history of CLOS, then we will introduce the ideas behind Lisp and Object-Orientation in general, and finally we will introduce the three main concepts in CLOS that make it unique.
-
-\subsection{Object-Orientation}
-\label{sec:oo}
+\section{Problem}
+\label{sec:problem}
 
 \begin{itemize}
-\item OO = objects + classes + inheritance
-\item Objects have attributes (state) and behaviour 
-\item These Objects can interact with one another by sending messages
-\item Classes are code templates with initial values for state and implementations of behavior
-\item Inheritance: deriving more specific classes from others 
-\item Most popular class-based: Objects are Instances of Classes
-\item Gives programmers the ability to model the real world
+\item To gain an overview of the "workings" within organizational structures it is often useful to have the participants and their "occupations"/"roles" written down somewhere. 
+\item say a system needs all participants to be objects
+\item their occupations would define their possible interactions, rights etc
+\item in many structures will not only the people come and leave, but they might also change their occupations
+\item example case university: professors can also be "CEOs", students can also be tutors etc
+\item how would it be possible to "abbilden" this within a software system, so that it is easily maintainable - meaning that individuals can change their jobs etc - and that it is easily extendable - meaning that new occupations can easily added and combined with already existing ones
 \end{itemize}
 
+
+\section{Context}
+\label{sec:context}
+A "solid" solution to the problem introduced in Section \ref{sec:problem} would be to use the \emph{Common Lisp Object System} (CLOS), an object system that extends Common Lisp\footnote{\url{https://common-lisp.net}, accessed: XXXXXX} to support object-orientation. \cite{CLOSOverview} However to understand how it could be employed and why it would be "a good idea" to do so, some background information will need to be provided first.
+
+In this Section we will hence start out by introduce the general ideas behind object-orientation as well as the programming language Lisp, and then we will introduce the three main concepts that make CLOS, an for Lisp, unique. Afterwards an overview of the history of CLOS will be provided to better understand its origins.
+
+\subsection{Object-Orientated Languages}
+\label{sec:oo}
+
+A definition of \emph{object-orientated} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages} that it can receive to evoke certain behavior. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. 
+
+An \emph{object-orientated} programming language is one that has these three concepts "integrated". They give programmers the ability to model human language based conceptualizations of the real world, since these are also just seperations of phenomena into groups with common traits.
 
 \subsection{Lisp}
 \label{sec:lisp}
 
+Stemming from the term \textbf{Lis}t \textbf{P}rocessor, Lisp is a programming language in which \emph{everything is a list}. This means that there is \emph{no discernment between data and code}. Hence an expression such as \texttt{(plus 3 4)} is without context nothing more than a "meaningless" listing of the "meaningless" expressions \texttt{plus}, \texttt{3}, and \texttt{4}. An expression like that only gets its meaning from an \emph{evaluation} by the interpreter which considers it in a certain context. In such a context the expression \texttt{plus} could be a function to add the arguments it is given, but that is entirely arbitrary. 
+
+Common Lisp is a standardized version of Lisp which provides certain data types and operations. But this type system can be extended through the use of \emph{macros}, which let developers give meaning to expressions. This feature of Lisp makes it "easy" to create \emph{Domain Specific Languages}\footnote{XXXX whats an DSL??}. \cite{XXX} They also form the basis of CLOS which in its entirety consists of 8 macros and 33 functions.
+
 \begin{itemize}
-\item List Processor: Everything is a list (plus 3 4)
-\item No Difference between data and code
-\item Use Lisp Macros to easily extend Lisp
-\item Therefore it is easy to create Domain Specific
-Languages etc.
-\item possible to add OO to Lisp in Lisp
-\item explain Macros in detail
+\item explain Macros in detail?
 \end{itemize}
 
 
@@ -80,7 +101,7 @@ Languages etc.
 \item Many implementations (“Tower of Babel” situation) (Flavors, CommonLoops)
 \item 1986: Workgroup of different researchers from Xerox PARC (CommonLoops) and Symbolic Inc. (New Flavors) worked on it together 
 \item CLOS: System built on top of Common Lisp
-\item meta-object protocol consisting of 33 functions \& 8 macros
+\item meta-object protocol - was das
 \item CLOS is portable to different LISP implementations
 \end{itemize}
 
@@ -99,20 +120,13 @@ blablablablablablablablablablablabla
 \label{sec:metcom}
 blablablablablablablablablablablabla
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.6\textwidth]{images/example.jpg}
-    \caption{test}
-    \label{fig:computing_primes}
-\end{figure}
+%\begin{figure}[ht]
+%    \centering
+%    \includegraphics[width=0.6\textwidth]{images/example.jpg}
+%    \caption{test}
+%    \label{fig:computing_primes}
+%\end{figure}
 
-\section{Problem}
-\label{sec:problem}
-
-\begin{itemize}
-\item how can we build a people description interface that is easily extendable etc., like DSL (?) for people and their positions
-\item using langs like Java (?) might be problematic, give example
-\end{itemize}
 
 \section{Approach}
 \label{sec:approach}
