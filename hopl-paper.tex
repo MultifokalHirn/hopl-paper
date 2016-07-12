@@ -12,11 +12,11 @@
             Prof.-Dr.-Helmert-Straße 2-3 \\
             14482 Potsdam \\
             Germany}
-\title{A Structuralist View on Object-Oriented \\ Thought Paradigms by Employment of CLOS Basics}
+\title{A Structuralist View on Object-Oriented \\ Thought Paradigms by Employment of CLOS}
 \date{\today}
 %
 \begin{document}
-\markboth{Computing Primes in Parallel Using the Actor Model}{Computing Primes in Parallel Using the Actor Model}
+\markboth{A Structuralist View on Object-Oriented \\ Thought Paradigms by Employment of CLOS}{A Structuralist View on Object-Oriented \\ Thought Paradigms by Employment of CLOS}
 \thispagestyle{empty}
 \vfill
 
@@ -24,7 +24,7 @@
 \maketitle
 %
 \begin{abstract}
-We did a whole buncha stuff
+A Structuralist View on Object-Oriented Thought Paradigms by Employment of CLOS
 \end{abstract}
 %
 \section{Introduction}
@@ -43,21 +43,110 @@ The following is a summary of each section. In section...
 
 \section{Context}
 \label{sec:context}
+In this Section we will give an overview of the history of CLOS, then we will introduce the ideas behind Lisp and Object-Orientation in general, and finally we will introduce the three main concepts in CLOS that make it unique.
 
+\subsection{Object-Orientation}
+\label{sec:oo}
+
+\begin{itemize}
+\item OO = objects + classes + inheritance
+\item Objects have attributes (state) and behaviour 
+\item These Objects can interact with one another by sending messages
+\item Classes are code templates with initial values for state and implementations of behavior
+\item Inheritance: deriving more specific classes from others 
+\item Most popular class-based: Objects are Instances of Classes
+\item Gives programmers the ability to model the real world
+\end{itemize}
+
+
+\subsection{Lisp}
+\label{sec:lisp}
+
+\begin{itemize}
+\item List Processor: Everything is a list (plus 3 4)
+\item No Difference between data and code
+\item Use Lisp Macros to easily extend Lisp
+\item Therefore it is easy to create Domain Specific
+Languages etc.
+\item possible to add OO to Lisp in Lisp
+\item explain Macros in detail
+\end{itemize}
+
+
+\subsection{History of CLOS}
+\label{sec:history}
+
+\begin{itemize}
+\item Many implementations (“Tower of Babel” situation) (Flavors, CommonLoops)
+\item 1986: Workgroup of different researchers from Xerox PARC (CommonLoops) and Symbolic Inc. (New Flavors) worked on it together 
+\item CLOS: System built on top of Common Lisp
+\item meta-object protocol consisting of 33 functions \& 8 macros
+\item CLOS is portable to different LISP implementations
+\end{itemize}
+
+\subsection{Main Concepts}
+\label{sec:concepts}
+
+\subsubsection{Generic Functions}
+\label{sec:genfun}
+blablablablablablablablablablablabla
+
+\subsubsection{Multiple Inheritance}
+\label{sec:mulinh}
+blablablablablablablablablablablabla
+
+\subsubsection{Method Combination}
+\label{sec:metcom}
+blablablablablablablablablablablabla
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{images/example.jpg}
-    \caption{Picture of how we propose finding prime numbers using the actor model. The keyword \texttt{self()} denotes the actor issuing the computation.}
+    \caption{test}
     \label{fig:computing_primes}
 \end{figure}
 
+\section{Problem}
+\label{sec:problem}
+
+\begin{itemize}
+\item how can we build a people description interface that is easily extendable etc., like DSL (?) for people and their positions
+\item using langs like Java (?) might be problematic, give example
+\end{itemize}
+
+\section{Approach}
+\label{sec:approach}
+
+
+\begin{itemize}
+\item 3 concepts will be used
+\item maybe give function that lets user add classes
+\end{itemize}
+
+
+\section{Implementation}
+\label{sec:implementation}
+
+\begin{itemize}
+\item give code details for concepts from Approach
+\end{itemize}
+
+\section{Evaluation}
+\label{sec:evaluation}
+
+\begin{itemize}
+\item DSL type declaration is easily maintainable
+\item using langs like Java (?) might be problematic, give example
+\end{itemize}
+
+
 \section{Conclusion}
+\label{sec:conclusion}
 Write me pl0x
 
 \newpage
 \nocite{*}
 \bibliographystyle{splncs}
-\bibliography{parallel-primes}
+\bibliography{hopl-paper}
 
 \end{document}
