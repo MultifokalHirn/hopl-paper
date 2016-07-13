@@ -5,6 +5,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[cache=false,outputdir=.texpadtmp]{minted}
 %
 \author{Lennard Wolf \\
         lennard.wolf@student.hpi.de}
@@ -32,11 +34,6 @@ Describing Dynamic Organizational Structures through the Common Lisp Object Syst
 %
 
 
-
-
-
-\section{Introduction}
-
 \textbf{My notations}
 
 \begin{itemize}
@@ -44,50 +41,50 @@ Describing Dynamic Organizational Structures through the Common Lisp Object Syst
 \end{itemize}
 
 
-% Topic / Domain
+
+\section{Introduction}
 
 
-% Problem
+\begin{itemize}
+\item Topic / Domain
+\item Problem
+\item Contribution
+\item Outline (The following is a summary of each section. In Section...)
+\end{itemize}
 
-
-% Contribution
-
-
-% Outline
-The following is a summary of each section. In section...
 
 \section{Problem}
 \label{sec:problem}
 
 \begin{itemize}
-\item To gain an overview of the "workings" within organizational structures it is often useful to have the participants and their "occupations"/"roles" written down somewhere. 
+\item To gain an overview of all the people within organizational structures, it is often useful to have the participants and their roles written down somewhere. 
 \item say a system needs all participants to be objects
 \item their occupations would define their possible interactions, rights etc
 \item in many structures will not only the people come and leave, but they might also change their occupations
 \item example case university: professors can also be "CEOs", students can also be tutors etc
-\item how would it be possible to "abbilden" this within a software system, so that it is easily maintainable - meaning that individuals can change their jobs etc - and that it is easily extendable - meaning that new occupations can easily added and combined with already existing ones
+\item how would it be possible to describe this within a software system, so that it is easily maintainable - meaning that individuals can change their jobs etc - and that it is easily extendable - meaning that new occupations can easily added and combined with already existing ones
 \end{itemize}
 
 
-\section{Context}
-\label{sec:context}
-A "solid" solution to the problem introduced in Section \ref{sec:problem} would be to use the \emph{Common Lisp Object System} (CLOS), an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: XXXXXX} providing "full" object-orientation. \cite{CLOSOverview} However to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
+\section{Background}
+\label{sec:background}
+A "solid" solution to the problem introduced in Section \ref{sec:problem} would be to use the \emph{Common Lisp Object System} (CLOS), an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing "full" object-orientation. \cite{demichiel1987common} However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
 
 In this Section we will hence start out by introducing the general ideas behind object-orientated programming languages, as well as the language Lisp, which is followed by a description of the three main concepts that make CLOS unique. An overview of the history of CLOS will be provided thereafter, so as to better understand its origins and historical context.
 
 \subsection{Object-Orientated Languages}
 \label{sec:oo}
 
-A definition of \emph{object-orientated} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages} that it can receive to evoke certain behavior. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. 
+A definition of \emph{object-orientated} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages}\footnote{In CLOS, these are referred to as callable \texttt{methods}.} that it can receive to evoke certain behavior. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. An object is hence an \emph{instance} of a class. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. The inheriting class is called the \emph{subclass}, the other the \emph{superclass}.
 
 An \emph{object-orientated} programming language is one that has these three concepts "integrated". They give programmers the ability to model human language based conceptualizations of the real world, since these are also just seperations of phenomena into groups with common traits.
 
 \subsection{Lisp}
 \label{sec:lisp}
 
-Stemming from the term \textbf{Lis}t \textbf{P}rocessor, Lisp is a programming language in which \emph{everything is a list}. This means that there is \emph{no discernment between data and code}. Hence an expression such as \texttt{(plus 3 4)} is without context nothing more than a "meaningless" listing of the "meaningless" expressions \texttt{plus}, \texttt{3}, and \texttt{4}. An expression like that only gets its meaning from an \emph{evaluation} by the interpreter which considers it in a certain context. In such a context the expression \texttt{plus} could be a function to add the arguments it is given, but that is entirely arbitrary. 
+Stemming from the term \textbf{Lis}t \textbf{P}rocessor, Lisp is a programming language in which \emph{everything is a list}. This means that there is \emph{no discernment between data and code}. Hence an expression such as \mintinline{lisp}{(plus 3 4)} is without context nothing more than a "meaningless" listing of the "meaningless" expressions \mintinline{lisp}{plus}, \mintinline{lisp}{3}, and \mintinline{lisp}{4}. An expression like that only gets its meaning from an \emph{evaluation} by the interpreter which considers it in a certain context. In such a context the expression \mintinline{lisp}{plus} could be a function to add the arguments it is given, but that is entirely arbitrary. 
 
-Common Lisp is a standardized version of Lisp which provides certain data types and operations. But this type system can be extended through the use of \emph{macros}, which let developers give meaning to expressions. This feature of Lisp makes it "easy" to create \emph{Domain Specific Languages}\footnote{XXXX Link to or explain DSL}. \cite{XXX} They also form the basis of CLOS which in its entirety consists of 8 macros and 33 functions.
+Common Lisp is a standardized version of Lisp which provides certain data types and operations. But this type system can be extended through the use of \emph{macros}, which let developers give meaning to expressions. This feature of Lisp greatly facilitates the creation \emph{Domain Specific Languages}. \cite{fowler2011domain-specific} They also form the basis of CLOS which in its entirety consists of 8 macros and 33 functions.
 
 
 \textbf{explain Macros in detail?}
@@ -97,45 +94,76 @@ Common Lisp is a standardized version of Lisp which provides certain data types 
 \subsection{History of CLOS}
 \label{sec:history}
 
-\begin{itemize}
-\item object orientation became desirable (cite), thus many attempts at oo built on top of Common (?) Lisp were made
-\item these many implementations caused “Tower of Babel” situation (Flavors, CommonLoops, others?)
-\item 1986: Workgroup of different researchers from Xerox PARC (CommonLoops) and Symbolic Inc. (New Flavors) worked on it together to standardize just like CL
-\item meta-object protocol - explanation?
-\item CLOS is portable to different LISP implementations
-\end{itemize}
+In the late 1960s, the new concept of object-orientation started to become a topic of interest for researchers in computer science. In 1986, four major attempts, namely New Flavors\footnote{Information on its predecessor Flavors can be found in \cite{Moon:1986:OPF:28697.28698}.}, CommonLoops\footnote{Information on CommonLoops can be found in \cite{Bobrow:1986:CML:28697.28700}.}, Object Lisp (LMI), and Common Objects, were made to bring that concept to the popular and easily extendable programming language Lisp. \cite{steele1993evolution} To create a standardized object system, researchers from Symbolics, Inc. and Xerox PARC met to combine their respective object systems, New Flavors and CommonLoops. \cite{demichiel1987common} The Common Lisp Object System was the result, which had been two years in the making. \cite{steele1993evolution} Important concepts, next to those described in the following \emph{Main Concepts} passage, were \emph{metaclasses}, of which regular classes are just instances, and \emph{metaobjects}, which lay the foundation for the concept of objects. \cite{kiczales1991art} The \emph{metaobject protocol} in CLOS allows the system to be written in itself. \cite{steele1993evolution} Furthermore, CLOS is portable to different LISP dialects. Examples are \emph{EIEIO}\footnote{\url{https://www.gnu.org/software/emacs/manual/html_mono/eieio.html}, accessed: 2016-07-13} for Emacs Lisp and \emph{SOS}\footnote{\url{https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-sos/}, accessed: 2016-07-13} for Scheme.
+
 
 
 \subsection{Main Concepts}
 \label{sec:concepts}
 
-CLOS, being an early (?) implementation of object-orientation, comprises concepts that are rather uncommon in modern object-orientated languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are. \cite{XXX}
+CLOS comprises concepts that are rather uncommon in modern object-orientated languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are. \cite{XXX} 
 
-\textbf{Explain Syntax Basics first? Or do this through Implementation later?}
+We will thus start out if a short introduction of the new macros supplied by CLOS, which we will then need to explain the aforementioned concepts.
+
+
+\subsubsection{Syntax Basics}
+The core of object-oriented programming lies with the creation of classes, corresponding methods, and the instantiation of objects. Listing \ref{lst:clossyntax} shows these basic operations in CLOS. Other macros exist\footnote{The entire implementation of CLOS can be found at \url{http://norvig.com/paip/clos.lisp}, accessed: 2016-07-13} but are not relevant in this context.
+
+\begin{listing}[]%ht]
+\begin{minted}{lisp}
+;;; Generic form of class and method definition, as well as instantiation
+(defclass NAME (SUPERCLASS1 ... SUPERCLASSn) (ATTRIBUTES))
+
+(defmethod NAME (RECIPIENT1 ... RECIPIENTn) (CODE))
+
+(make-instance 'CLASS :ATTR1 VAL1 ... :ATTRn VALn)
+
+
+;;; Examples of class and method definition, as well as instantiation
+(defclass teacher (person)             ; teacher is subclass of person
+  ((subject :accessor teacher-subject  ; teacher has attribute subject
+            :initarg :subject)))
+
+(defmethod what-is-my-subject ((teach teacher))       
+  (format t "I am a teacher in ~d." (teacher-subject teach)))
+  
+(make-instance 'teacher :name "Mary" :subject "Maths")
+
+\end{minted}
+\caption{The central macros provided by CLOS}
+\label{lst:clossyntax}
+\end{listing}
+
+\begin{wrapfigure}{r}{0.35\textwidth}
+  \begin{center}
+    \includegraphics[width=0.34\textwidth]{images/multipleinheritance.png}
+  \end{center}
+  \caption{A UML class diagram with multiple inheritance}
+  \label{fig:multipleinheritance}
+\end{wrapfigure}
 
 \subsubsection{Multiple Inheritance}
 \label{sec:mulinh}
-blablablablablablablablablablablabla
+was first introduced by the predecessor of New Flavors, \emph{Flavors}. It allows classes to have multiple superclasses, thereby inheriting methods and attributes of each (see Figure \ref{fig:multipleinheritance}). The AthleticTeacher class defined by \mintinline{lisp}{(defclass athletic-teacher (teacher athlete) () )} would, if some inheritances from Teacher and Athlete are conflicting, prioritize the Teacher behavior, because it is listed first.  
 
-\subsubsection{Generic Functions}
-\label{sec:genfun}
-blablablablablablablablablablablabla
 
 \subsubsection{Method Combination}
 \label{sec:metcom}
-blablablablablablablablablablablabla
-
-\textbf{Put visualisations together!}
-
-
-%\begin{figure}[ht]
-%    \centering
-%    \includegraphics[width=0.6\textwidth]{images/example.jpg}
-%    \caption{test}
-%    \label{fig:computing_primes}
-%\end{figure}
+is an important addition to multiple inheritance, because it lets developers blend behavior together. The keywords \mintinline{lisp}{:before}, \mintinline{lisp}{:after}, and \mintinline{lisp}{:around} allow the specification of certain behavior to be added to a called method. \mintinline{lisp}{(defmethod method :after}\mintinline{lisp}{ ((teach teacher))}
+    \mintinline{lisp}{()} would run additional behavior after the primary behavior defined for \mintinline{lisp}{method} for all Teacher. 
 
 
+\subsubsection{Generic Functions}
+\label{sec:genfun}
+In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send} function (\mintinline{lisp}{(send object :message)}). New Flavors however introduced the \mintinline{lisp}{(message object)} notation, which required \mintinline{lisp}{message} to be \emph{generic}, meaning that it needed to be a globally defined interface (see Figure \ref{fig:genericfunction}). By calling the generic function, different behavior will ensue, depending on the type of the receiver provided as argument. If methods are defined that have no corresponding generic function, CLOS will add it automatically at compile time.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/genericfunction.png}
+    \caption{The global interface provided by the generic function}
+    \label{fig:genericfunction}
+\end{figure}
 
 \section{Approach}
 \label{sec:approach}
@@ -149,6 +177,38 @@ blablablablablablablablablablablabla
 
 \section{Implementation}
 \label{sec:implementation}
+
+\begin{listing}[]%ht]
+\begin{minted}{lisp}
+
+(defgeneric who-am-i (person)
+      (:documentation "Makes the person describe themselves."))
+
+(defmethod who-am-i ((p person))
+    (format t "My name is ~d and I am ~d years old.~%" (person-name p) (person-age p)))
+
+(defmethod who-am-i ((p teacher))
+    (format t "My name is ~d and I am ~d years old.~%" (person-name p) (person-age p))
+    (format t "I am a teacher and my subject is ~d.~%" (teacher-subject p)))
+
+(defmethod who-am-i :after ((p teacher))
+    (format t "I am a teacher and my subject is ~d.~%" (teacher-subject p)))
+
+(defmethod who-am-i :after ((p athlete))
+    (format t "I am an athlete and my sport is ~d.~%" (athlete-sport p)))
+
+(defmethod who-am-i :around ((p athletic-teacher))
+    (format t "Oh, hi!~%" )
+    (let ((result (call-next-method)))
+      (format t "Gotta sprint back to class, bye-bye!~%")
+      result))
+
+\end{minted}
+\caption{The central macros provided by CLOS}
+\label{lst:clossyntax}
+\end{listing}
+
+
 
 \begin{itemize}
 \item give code details for concepts from Approach
