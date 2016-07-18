@@ -36,26 +36,23 @@ Describing Dynamic Organizational Structures through the Common Lisp Object Syst
 
 \section{Introduction}
 
+Organizational structures often require maintainable and easily extendable descriptions of shareholders and their roles. The \emph{Common Lisp Object System} (CLOS) with its concepts of \emph{multiple inheritance}, \emph{generic functions}, and \emph{method combination} is a tool that facilitates the creation and perpetuation of such a register of members. This work presents an overview of CLOS' history as well as its basic syntax and core concepts by employing it for the creation of a dynamic shareholder register for a university. 
+\newline
 
-\begin{itemize}
-\item Topic / Domain
-\item Problem
-\item Contribution
-\item Outline (The following is a summary of each Section. In Section...)
-\end{itemize}
+This work is structured as follows. Section \ref{sec:problem} introduces the problem of dynamic shareholder lists for organizational structures. Section \ref{sec:background} introduces CLOS, its history, and core concepts. In Section \ref{sec:approach}, CLOS is applied to the given problem and Section \ref{sec:implementation} presents the implementational details of the solution. Section \ref{sec:evaluation} gives a short evaluation and Section \ref{sec:conclusion} concludes this work.
 
 
 \section{Problem}
 \label{sec:problem}
 
-To achieve their goals, organizational structures require planning as well as control over processes and the network of shareholders. \cite[42f.]{Schmidt2000} To gain the necessary overview, it is often useful to have a list of all members and their roles. 
+To achieve their goals, organizational structures require planning as well as control over processes and the network of shareholders. \cite[42f.]{Schmidt2000} To gain the necessary overview, it is often useful to have a list of all members and their roles. In the United Kingdom\footnote{Companies Act 2006 \url{http://legislation.data.gov.uk/ukpga/2006/46/part/8/chapter/2/data.htm?wrap=true}, accessed: 2016-07-18} as well as other countries such a \emph{register of members} is furthermore required by the legislation.
 
 Since organizations are often dynamic, such a list should also be easily \emph{maintainable}, meaning that participants can be both added or removed as well as change their role. It should also be \emph{extendable} meaning that new roles can easily added and combined with already existing ones. Furthermore, computer programs used within the organization might have to interact with the list, so \emph{accessibility} is another key requirement. These \emph{evolution qualities} \cite{young2001effective} would thus be the key requirements for  any list describing the participants within an organizational structure.
 
 
 \section{Background}
 \label{sec:background}
-A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the \emph{Common Lisp Object System} (CLOS), an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing "full" object-orientation. \cite{demichiel1987common} However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
+A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the Common Lisp Object System, an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing "full" object-orientation. \cite{demichiel1987common} However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
 
 In this Section we will hence start out by introducing the general ideas behind object-orientated programming languages, as well as the language Lisp, which is followed by a description of the three main concepts that make CLOS unique. An overview of the history of CLOS will be provided thereafter, so as to better understand its origins and historical context.
 
@@ -83,8 +80,6 @@ Common Lisp is a standardized version of Lisp which provides certain data types 
 
 In the late 1960s, the new concept of object-orientation started to become a topic of interest for researchers in computer science. In 1986, four major attempts, namely New Flavors\footnote{Information on its predecessor Flavors can be found in \cite{Moon:1986:OPF:28697.28698}.}, CommonLoops\footnote{Information on CommonLoops can be found in \cite{Bobrow:1986:CML:28697.28700}.}, Object Lisp (LMI), and Common Objects, were made to bring that concept to the popular and easily extendable programming language Lisp. \cite{steele1993evolution} To create a standardized object system, researchers from Symbolics, Inc. and Xerox PARC met to combine their respective object systems, New Flavors and CommonLoops. \cite{demichiel1987common} The Common Lisp Object System was the result, which had been two years in the making. \cite{steele1993evolution} Important concepts, next to those described in the following \emph{Main Concepts} passage, were \emph{metaclasses}, of which regular classes are just instances, and \emph{metaobjects}, which lay the foundation for the concept of objects. \cite{kiczales1991art} The \emph{metaobject protocol} in CLOS allows the system to be written in itself. \cite{steele1993evolution} Furthermore, CLOS is portable to different LISP dialects. Examples are \emph{EIEIO}\footnote{\url{https://www.gnu.org/software/emacs/manual/html_mono/eieio.html}, accessed: 2016-07-13} for Emacs Lisp and \emph{SOS}\footnote{\url{https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-sos/}, accessed: 2016-07-13} for Scheme.
 
-
-
 \subsection{Main Concepts}
 \label{sec:concepts}
 
@@ -104,35 +99,22 @@ The core of object-oriented programming lies with the creation of classes, corre
 (defmethod NAME (RECIPIENT1 ... RECIPIENTn) (CODE))
 
 (make-instance 'CLASS :ATTR1 VAL1 ... :ATTRn VALn)
-
-
-;;; Examples of class and method definition, as well as instantiation
-(defclass teacher (person)             ; teacher is subclass of person
-  ((subject :accessor teacher-subject  ; teacher has attribute subject
-            :initarg :subject)))
-
-(defmethod what-is-my-subject ((teach teacher))       
-  (format t "I am a teacher in ~d." (teacher-subject teach)))
-  
-(make-instance 'teacher :name "Mary" :subject "Maths")
-
 \end{minted}
 \caption{The central macros provided by CLOS}
 \label{lst:clossyntax}
 \end{listing}
 
-\begin{wrapfigure}{r}{0.35\textwidth}
-  \begin{center}
-    \includegraphics[width=0.34\textwidth]{images/multipleinheritance.png}
-  \end{center}
-  \caption{A UML class diagram with multiple inheritance}
-  \label{fig:multipleinheritance}
-\end{wrapfigure}
 
 \subsubsection{Multiple Inheritance}
 \label{sec:mulinh}
 was first introduced by the predecessor of New Flavors, \emph{Flavors}. It allows classes to have multiple superclasses, thereby inheriting methods and attributes of each (see Figure \ref{fig:multipleinheritance}). The AthleticTeacher class defined by \mintinline{lisp}{(defclass athletic-teacher (teacher athlete) () )} would, if some inheritances from Teacher and Athlete are conflicting, prioritize the Teacher behavior, because it is listed first.  
 
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.35\textwidth]{images/multipleinheritance2.png}
+    \caption{A UML class diagram with multiple inheritance}
+    \label{fig:multipleinheritance}
+\end{figure}
 
 \subsubsection{Method Combination}
 \label{sec:metcom}
@@ -145,7 +127,7 @@ is an important addition to multiple inheritance, because it lets developers ble
 In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send} function \mintinline{lisp}{(send object :message)}. New Flavors however introduced the \mintinline{lisp}{(message object)} notation, which required \mintinline{lisp}{message} to be \emph{generic}, meaning that it needed to be a globally defined interface (see Figure \ref{fig:genericfunction}). By calling the generic function, different behavior will ensue, depending on the type of the receiver provided as argument. If methods are defined that have no corresponding generic function, CLOS will add it automatically at compile time.
 
 
-\begin{figure}[ht]
+\begin{figure}[]
     \centering
     \includegraphics[width=0.5\textwidth]{images/genericfunction.png}
     \caption{The global interface provided by the generic function}
@@ -155,22 +137,60 @@ In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send}
 \section{Approach}
 \label{sec:approach}
 
-It furthermore permits the storage in SQL database systems via object-relational mappers\footnote{A list of object-relational mappers for CLOS can be found at \url{http://www.cliki.net/ORM},  missing from the list is Mito (\url{https://github.com/fukamachi/mito}), both accessed: 2016-07-18} for easy access for non-Lisp programs.
+As discussed in Section \ref{sec:oo}, object-orientation is suitable for the description of real world states of affairs. Together with its concepts, CLOS thus lends itself to the creation and maintenance of descriptions of organizational structures.
+
+In our solution, classes represent the roles, while an instance of such a class would be an individual member. This way, a Lisp REPL can be used for simple queries, while other Lisp-programs (such as human capital management software) can use the objects for further interaction. CLOS furthermore permits the storage of the objects in SQL database systems via object-relational mappers\footnote{A list of object-relational mappers for CLOS can be found at \url{http://www.cliki.net/ORM}, missing from the list is Mito (\url{https://github.com/fukamachi/mito}), both accessed: 2016-07-18}, so that non-Lisp programs can also have easy access. Nevertheless, this work focuses on a description of the arrangement of people within an organizational structure and  an interface to query information on individuals and occupations.
+\newline
+
+A common organizational structure is the university. As new students and chairs come and go, new roles and corresponding individuals will have to be accommodated for. The following is an abstract description of a possible arrangement of roles which is visualized in Figure \ref{fig:class-diagram}. Since all members have a certain set of common attributes such as name and adresse, an abstract class \texttt{Person} for all members to inherit from will have to exist. As it is possible that the university's chairman is also a professor, occupations need to be combinable. This is possible through multiple inheritance so that \texttt{ProfessorChairman} would simply be a subclass of both \texttt{Professor} and \texttt{Chairman}, as described in Section \ref{sec:concepts}. 
+
+A distinction between students and staff would make sense, since the staff needs bank details for compensations. In reality however, this line is blurred by multiple inheritance, as a student might also be a research assistant.
+
+When making queries via the Lisp REPL, a simple interface should make responses that should share a common format. And since the addition of new occupations should not require any alterations to such an interface, the method combination concept would prove its usefulness. 
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/class-diagram.png}
+    \caption{Excerpt from a UML class diagram of a description of the occupations within a university}
+    \label{fig:class-diagram}
+\end{figure}
+
 
 \begin{itemize}
-\item reasoning
-\item problem step by step, show clos solution:
-\item example case university: professors can also be "CEOs", students can also be tutors etc
-\end{itemize}
-
-\begin{itemize}
-\item 3 concepts will be used
-\item maybe give function that lets user add classes
+\item ...
 \end{itemize}
 
 
 \section{Implementation}
 \label{sec:implementation}
+
+This Section discusses the implementation of the arrangement of occupations within a university as presented in Section \ref{sec:approach}. 
+
+\begin{itemize}
+\item common classes first
+\item relationships?
+\item add chair class?
+\item function for creation of student in REPL?
+
+\end{itemize}
+
+\begin{listing}[]%ht]
+\begin{minted}{lisp}
+
+;;; Examples of class and method definition, as well as instantiation
+(defclass teacher (person)            ; teacher is subclass of person
+  ((subject :accessor teacher-subject ; teacher has attribute subject
+            :initarg :subject)))
+
+(defmethod what-is-my-subject ((teach teacher))       
+  (format t "I am a teacher in ~d." (teacher-subject teach)))
+  
+(make-instance 'teacher :name "Mary" :subject "Maths")
+
+\end{minted}
+\caption{The central macros provided by CLOS}
+\label{lst:clossyntax}
+\end{listing}
 
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
@@ -203,17 +223,13 @@ It furthermore permits the storage in SQL database systems via object-relational
 \end{listing}
 
 
-
-\begin{itemize}
-\item give code details for concepts from Approach
-\end{itemize}
-
 \section{Evaluation}
 \label{sec:evaluation}
 
 \begin{itemize}
 \item DSL type declaration is easily maintainable
-\item using langs like Java (?) might be problematic, give example
+\item using langs like Java (?) might be problematic, give example mult inheritance: needs interfaces as shown in https://stackoverflow.com/questions/21824402/java-multiple-inheritance
+\item future work: relations between members, could be used as framework for any such structure; UI is easy 
 \end{itemize}
 
 
