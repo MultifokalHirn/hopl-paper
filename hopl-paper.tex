@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage[cache=false,outputdir=.texpadtmp]{minted}
+
 %
 \author{Lennard Wolf \\
         lennard.wolf@student.hpi.de}
@@ -36,7 +37,7 @@ Describing Dynamic Organizational Structures through the Common Lisp Object Syst
 
 \section{Introduction}
 
-Organizational structures often require maintainable and easily extendable descriptions of shareholders and their roles. The \emph{Common Lisp Object System} (CLOS) with its concepts of \emph{multiple inheritance}, \emph{generic functions}, and \emph{method combination} is a tool that facilitates the creation and perpetuation of such a register of members. This work presents an overview of CLOS' history as well as its basic syntax and core concepts by employing it for the creation of a dynamic shareholder register for a university. 
+Organizational structures often require maintainable and easily extendable descriptions of shareholders and their roles. The \emph{Common Lisp Object System} (CLOS) with its concepts of \emph{multiple inheritance}, \emph{generic functions}, and \emph{method combination} is a tool that facilitates the creation and perpetuation of such a register of members. This work presents an overview of CLOS' history as well as its basic syntax and core concepts by employing it for the creation of a dynamic member register for a university. 
 \newline
 
 This work is structured as follows. Section \ref{sec:problem} introduces the problem of dynamic shareholder lists for organizational structures. Section \ref{sec:background} introduces CLOS, its history, and core concepts. In Section \ref{sec:approach}, CLOS is applied to the given problem and Section \ref{sec:implementation} presents the implementational details of the solution. Section \ref{sec:evaluation} gives a short evaluation and Section \ref{sec:conclusion} concludes this work.
@@ -177,48 +178,17 @@ This Section discusses the implementation of the arrangement of occupations with
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
 
-;;; Examples of class and method definition, as well as instantiation
-(defclass teacher (person)            ; teacher is subclass of person
-  ((subject :accessor teacher-subject ; teacher has attribute subject
-            :initarg :subject)))
-
-(defmethod what-is-my-subject ((teach teacher))       
-  (format t "I am a teacher in ~d." (teacher-subject teach)))
-  
-(make-instance 'teacher :name "Mary" :subject "Maths")
-
+(some code here)
 \end{minted}
-\caption{The central macros provided by CLOS}
+\caption{The basic \mintinline{lisp}{person} class }
 \label{lst:clossyntax}
 \end{listing}
 
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
-
-(defgeneric who-am-i (person)
-      (:documentation "Makes the person describe themselves."))
-
-(defmethod who-am-i ((p person))
-    (format t "My name is ~d and I am ~d years old.~%" (person-name p) (person-age p)))
-
-(defmethod who-am-i ((p teacher))
-    (format t "My name is ~d and I am ~d years old.~%" (person-name p) (person-age p))
-    (format t "I am a teacher and my subject is ~d.~%" (teacher-subject p)))
-
-(defmethod who-am-i :after ((p teacher))
-    (format t "I am a teacher and my subject is ~d.~%" (teacher-subject p)))
-
-(defmethod who-am-i :after ((p athlete))
-    (format t "I am an athlete and my sport is ~d.~%" (athlete-sport p)))
-
-(defmethod who-am-i :around ((p athletic-teacher))
-    (format t "Oh, hi!~%" )
-    (let ((result (call-next-method)))
-      (format t "Gotta sprint back to class, bye-bye!~%")
-      result))
-
+(some code here)
 \end{minted}
-\caption{The central macros provided by CLOS}
+\caption{The interface to access the data in a human readable manner}
 \label{lst:clossyntax}
 \end{listing}
 
@@ -235,11 +205,27 @@ This Section discusses the implementation of the arrangement of occupations with
 
 \section{Conclusion}
 \label{sec:conclusion}
-Write me pl0x
+Write me 
 
 \newpage
 \nocite{*}
 \bibliographystyle{splncs}
 \bibliography{hopl-paper}
+
+\newpage
+    \begin{center}
+      {\bf APPENDIX}
+    \end{center}
+\label{sec:appendix}
+
+\begin{listing}[]%ht]
+\begin{minted}{lisp}
+
+(some code here)
+
+\end{minted}
+\caption{The implementation of the described system in full}
+\label{lst:entire-implementation}
+\end{listing}
 
 \end{document}
