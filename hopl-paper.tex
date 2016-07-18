@@ -34,14 +34,6 @@ Describing Dynamic Organizational Structures through the Common Lisp Object Syst
 %
 
 
-\textbf{My notations}
-
-\begin{itemize}
-\item "term" : wording unsure
-\end{itemize}
-
-
-
 \section{Introduction}
 
 
@@ -49,26 +41,21 @@ Describing Dynamic Organizational Structures through the Common Lisp Object Syst
 \item Topic / Domain
 \item Problem
 \item Contribution
-\item Outline (The following is a summary of each section. In Section...)
+\item Outline (The following is a summary of each Section. In Section...)
 \end{itemize}
 
 
 \section{Problem}
 \label{sec:problem}
 
-\begin{itemize}
-\item To gain an overview of all the people within organizational structures, it is often useful to have the participants and their roles written down somewhere. 
-\item say a system needs all participants to be objects
-\item their occupations would define their possible interactions, rights etc
-\item in many structures will not only the people come and leave, but they might also change their occupations
-\item example case university: professors can also be "CEOs", students can also be tutors etc
-\item how would it be possible to describe this within a software system, so that it is easily maintainable - meaning that individuals can change their jobs etc - and that it is easily extendable - meaning that new occupations can easily added and combined with already existing ones
-\end{itemize}
+To achieve their goals, organizational structures require planning as well as control over processes and the network of shareholders. \cite[42f.]{Schmidt2000} To gain the necessary overview, it is often useful to have a list of all members and their roles. 
+
+Since organizations are often dynamic, such a list should also be easily \emph{maintainable}, meaning that participants can be both added or removed as well as change their role. It should also be \emph{extendable} meaning that new roles can easily added and combined with already existing ones. Furthermore, computer programs used within the organization might have to interact with the list, so \emph{accessibility} is another key requirement. These \emph{evolution qualities} \cite{young2001effective} would thus be the key requirements for  any list describing the participants within an organizational structure.
 
 
 \section{Background}
 \label{sec:background}
-A "solid" solution to the problem introduced in Section \ref{sec:problem} would be to use the \emph{Common Lisp Object System} (CLOS), an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing "full" object-orientation. \cite{demichiel1987common} However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
+A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the \emph{Common Lisp Object System} (CLOS), an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing "full" object-orientation. \cite{demichiel1987common} However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
 
 In this Section we will hence start out by introducing the general ideas behind object-orientated programming languages, as well as the language Lisp, which is followed by a description of the three main concepts that make CLOS unique. An overview of the history of CLOS will be provided thereafter, so as to better understand its origins and historical context.
 
@@ -77,7 +64,7 @@ In this Section we will hence start out by introducing the general ideas behind 
 
 A definition of \emph{object-orientated} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages}\footnote{In CLOS, these are referred to as callable \texttt{methods}.} that it can receive to evoke certain behavior. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. An object is hence an \emph{instance} of a class. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. The inheriting class is called the \emph{subclass}, the other the \emph{superclass}.
 
-An \emph{object-orientated} programming language is one that has these three concepts "integrated". They give programmers the ability to model human language based conceptualizations of the real world, since these are also just seperations of phenomena into groups with common traits.
+An \emph{object-orientated} programming language is one that has these three concepts "integrated". They give programmers the ability to model human language based conceptualizations of the real world, since these are also just separations of phenomena into groups with common traits.
 
 \subsection{Lisp}
 \label{sec:lisp}
@@ -155,7 +142,7 @@ is an important addition to multiple inheritance, because it lets developers ble
 
 \subsubsection{Generic Functions}
 \label{sec:genfun}
-In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send} function (\mintinline{lisp}{(send object :message)}). New Flavors however introduced the \mintinline{lisp}{(message object)} notation, which required \mintinline{lisp}{message} to be \emph{generic}, meaning that it needed to be a globally defined interface (see Figure \ref{fig:genericfunction}). By calling the generic function, different behavior will ensue, depending on the type of the receiver provided as argument. If methods are defined that have no corresponding generic function, CLOS will add it automatically at compile time.
+In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send} function \mintinline{lisp}{(send object :message)}. New Flavors however introduced the \mintinline{lisp}{(message object)} notation, which required \mintinline{lisp}{message} to be \emph{generic}, meaning that it needed to be a globally defined interface (see Figure \ref{fig:genericfunction}). By calling the generic function, different behavior will ensue, depending on the type of the receiver provided as argument. If methods are defined that have no corresponding generic function, CLOS will add it automatically at compile time.
 
 
 \begin{figure}[ht]
@@ -168,6 +155,13 @@ In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send}
 \section{Approach}
 \label{sec:approach}
 
+It furthermore permits the storage in SQL database systems via object-relational mappers\footnote{A list of object-relational mappers for CLOS can be found at \url{http://www.cliki.net/ORM},  missing from the list is Mito (\url{https://github.com/fukamachi/mito}), both accessed: 2016-07-18} for easy access for non-Lisp programs.
+
+\begin{itemize}
+\item reasoning
+\item problem step by step, show clos solution:
+\item example case university: professors can also be "CEOs", students can also be tutors etc
+\end{itemize}
 
 \begin{itemize}
 \item 3 concepts will be used
