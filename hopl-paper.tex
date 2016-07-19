@@ -53,16 +53,16 @@ Since organizations are often dynamic, such a list should also be easily \emph{m
 
 \section{Background}
 \label{sec:background}
-A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the Common Lisp Object System, an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing "full" object-orientation. \cite{demichiel1987common} However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
+A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the Common Lisp Object System, an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing object-orientation. \cite{demichiel1987common} However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
 
 In this Section we will hence start out by introducing the general ideas behind object-orientated programming languages, as well as the language Lisp, which is followed by a description of the three main concepts that make CLOS unique. An overview of the history of CLOS will be provided thereafter, so as to better understand its origins and historical context.
 
-\subsection{Object-Orientated Languages}
+\subsection{Object-Oriented Languages}
 \label{sec:oo}
 
-A definition of \emph{object-orientated} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages}\footnote{In CLOS, these are referred to as callable \texttt{methods}.} that it can receive to evoke certain behavior. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. An object is hence an \emph{instance} of a class. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. The inheriting class is called the \emph{subclass}, the other the \emph{superclass}.
+A definition of \emph{object-oriented} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages}\footnote{In CLOS, these are referred to as callable \texttt{methods}.} that it can receive to evoke certain behavior. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. An object is hence an \emph{instance} of a class. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. The inheriting class is called the \emph{subclass}, the other the \emph{superclass}.
 
-An \emph{object-orientated} programming language is one that has these three concepts "integrated". They give programmers the ability to model human language based conceptualizations of the real world, since these are also just separations of phenomena into groups with common traits.
+An \emph{object-oriented} programming language is one that has these three concepts "integrated". They give programmers the ability to model human language based conceptualizations of the real world, since these are also just separations of phenomena into groups with common traits.
 
 \subsection{Lisp}
 \label{sec:lisp}
@@ -84,7 +84,7 @@ In the late 1960s, the new concept of object-orientation started to become a top
 \subsection{Main Concepts}
 \label{sec:concepts}
 
-CLOS comprises concepts that are rather uncommon in modern object-orientated languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are. \cite{XXX} 
+CLOS comprises concepts that are rather uncommon in modern object-oriented languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are. \cite{XXX} 
 
 We will thus start out if a short introduction of the new macros supplied by CLOS, which we will then need to explain the aforementioned concepts.
 
