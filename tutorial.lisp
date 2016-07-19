@@ -1,52 +1,44 @@
 (defclass person ()
   ((name :accessor person-name
-         :initform 'susi
          :initarg :name)
-   (age :accessor person-age
-        :initform 42
-        :initarg :age)))
+   (age :accessor person-age ;is the person-* accessor not kind of stupid?
+        :initarg :age)
+   (address :accessor person-address
+         :initarg :address)
+   (registration-date :accessor person-registration-date
+         :initarg :registration-date)))
 
-(defun make-person (name age)
-  (make-instance 'person :name name :age age))
-
-
-(defclass teacher (person)
-  ((subject :accessor teacher-subject
-            :initarg :subject)))
-
-(defun make-teacher (name age subject)
-  (make-instance 'teacher :name name :age age :subject subject))
+(defun make-person (name age adress registration-date)
+  (make-instance 'person :name name :age age :address address
+     :registration-date registration-date))
 
 
-(defclass athlete (person)
-  ((sport :accessor athlete-sport
-            :initarg :sport)))
+(defclass staffmember (person)
+  ((bank-details :accessor staffmember-bank-details
+            :initarg :bank-details)))
 
-(defun make-athlete (name age sport)
-  (make-instance 'athlete :name name :age age :sport sport))
+(defun make-staffmember (name age subject adress registration-date bank-details)
+  (make-instance 'staffmember :name name :age age :address address
+     :registration-date registration-date :bank-details bank-details))
 
+(defclass student (person)
+ ((ects-points :accessor student-ects-points
+           :initarg :ects-points)))
 
-(defclass athletic-teacher (teacher athlete) () )
-
-(defun make-athletic-teacher (name age sport subject)
-  (make-instance 'athletic-teacher :name name :age age :sport sport :subject subject))
-
+(defun make-student (name age subject adress registration-date ects-points)
+ (make-instance 'student :name name :age age :address address
+    :registration-date registration-date :ects-points ects-points))
 
 (defgeneric who-am-i (person)
-      (:documentation "Makes the person describe themselves."))
+      (:documentation "Returns data on all attributes."))
 
 (defmethod who-am-i ((p person))
     (format t "My name is ~d and I am ~d years old.~%" (person-name p) (person-age p)))
 
+
 (defmethod who-am-i ((p teacher))
     (format t "My name is ~d and I am ~d years old.~%" (person-name p) (person-age p))
     (format t "I am a teacher and my subject is ~d.~%" (teacher-subject p)))
-
-(defmethod who-am-i :after ((p teacher))
-    (format t "I am a teacher and my subject is ~d.~%" (teacher-subject p)))
-
-(defmethod who-am-i :after ((p athlete))
-    (format t "I am an athlete and my sport is ~d.~%" (athlete-sport p)))
 
 (defmethod who-am-i :around ((p athletic-teacher))
     (format t "Oh, hi!~%" )
@@ -56,8 +48,8 @@
 
 ;-------------------------------------
 
-(defvar *Bill* (make-person 'bill 21))
-(defvar *Johann* (make-teacher 'johann 42 'maths))
+(defvar *Bill* (make-person 'bill 21 "randomstreet" ))
+(defvar *Johann* (make-staffmember 'johann 42 "funstreet" ))
 (defvar *Susi* (make-athletic-teacher 'susi 30 'tennis 'geography))
 
 (format t "~%")

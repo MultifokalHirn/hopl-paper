@@ -152,7 +152,7 @@ When making queries via the Lisp REPL, a simple interface should make responses 
 \begin{figure}[]
     \centering
     \includegraphics[width=0.9\textwidth]{images/class-diagram.png}
-    \caption{Excerpt from a UML class diagram of a description of the occupations within a university}
+    \caption{Excerpt from a UML class diagram of a description of the occupations within a university WIP}
     \label{fig:class-diagram}
 \end{figure}
 
@@ -178,17 +178,45 @@ This Section discusses the implementation of the arrangement of occupations with
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
 
-(some code here)
+(defclass person ()
+  ((name :accessor person-name
+         :initarg :name)
+   (age :accessor person-age ;is the person-* accessor not kind of stupid?
+        :initarg :age)
+   (address :accessor person-address
+         :initarg :address)
+   (registration-date :accessor person-registration-date
+         :initarg :registration-date)))
+
+(defun make-person (name age adress registration-date)
+  (make-instance 'person :name name :age age :address address
+     :registration-date registration-date))
+     
 \end{minted}
-\caption{The basic \mintinline{lisp}{person} class }
+\caption{The basic \mintinline{lisp}{person} class WIP}
 \label{lst:clossyntax}
 \end{listing}
 
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
-(some code here)
+(defclass staffmember (person)
+  ((bank-details :accessor staffmember-bank-details
+            :initarg :bank-details)))
+
+(defun make-staffmember (name age subject adress registration-date bank-details)
+  (make-instance 'staffmember :name name :age age :address address
+     :registration-date registration-date :bank-details bank-details))
+
+(defclass student (person)
+ ((ects-points :accessor student-ects-points
+           :initarg :ects-points)))
+
+(defun make-student (name age subject adress registration-date ects-points)
+ (make-instance 'student :name name :age age :address address
+    :registration-date registration-date :ects-points ects-points))
+
 \end{minted}
-\caption{The interface to access the data in a human readable manner}
+\caption{The interface to access the data in a human readable manner WIP}
 \label{lst:clossyntax}
 \end{listing}
 
@@ -224,7 +252,7 @@ Write me
 (some code here)
 
 \end{minted}
-\caption{The implementation of the described system in full}
+\caption{The implementation of the described system in full WIP}
 \label{lst:entire-implementation}
 \end{listing}
 
