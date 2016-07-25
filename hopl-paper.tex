@@ -46,19 +46,29 @@ This work is structured as follows. Section \ref{sec:problem} introduces the pro
 \section{Problem}
 \label{sec:problem}
 
-To achieve their goals, organizational structures require planning as well as control over processes and the network of shareholders. \cite[42f.]{Schmidt2000} To gain the necessary overview, it is often useful to have a list of all members and their roles. In the United Kingdom\footnote{Companies Act 2006 \url{http://legislation.data.gov.uk/ukpga/2006/46/part/8/chapter/2/data.htm?wrap=true}, accessed: 2016-07-18} as well as other countries such a \emph{register of members} is furthermore required by the legislation.
+To achieve their goals, organizational structures require planning as well as control over processes and the network of shareholders \cite[42f.]{Schmidt2000}. To gain the necessary overview, it is often useful to have a list of all members and their roles. In the United Kingdom\footnote{Companies Act 2006 \url{http://legislation.data.gov.uk/ukpga/2006/46/part/8/chapter/2/data.htm?wrap=true}, accessed: 2016-07-18} as well as other countries such a \emph{register of members} is furthermore required by the legislation.
 
 Since organizations are often dynamic, such a list should also be easily \emph{maintainable}, meaning that participants can be both added or removed as well as change their role. It should also be \emph{extendable} meaning that new roles can easily added and combined with already existing ones. Furthermore, computer programs used within the organization might have to interact with the list, so \emph{accessibility} is another key requirement. These \emph{evolution qualities} \cite{young2001effective} would thus be the key requirements for  any list describing the participants within an organizational structure.
 
 
 \section{Background}
 \label{sec:background}
-A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the Common Lisp Object System, an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing object-orientation. \cite{demichiel1987common} However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
+A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the Common Lisp Object System, an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing object-orientation \cite{demichiel1987common}. However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
+
+\begin{itemize}
+\item fix sectioning, add rel work
+\end{itemize}
 
 In this Section we will hence start out by introducing the general ideas behind object-orientated programming languages, as well as the language Lisp, which is followed by a description of the three main concepts that make CLOS unique. An overview of the history of CLOS will be provided thereafter, so as to better understand its origins and historical context.
 
 \subsection{Object-Oriented Languages}
 \label{sec:oo}
+
+\begin{itemize}
+\item what is OO? then say that according to... ool is...
+\item fix message/method stuff!
+\end{itemize}
+
 
 A definition of \emph{object-oriented} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages}\footnote{In CLOS, these are referred to as callable \texttt{methods}.} that it can receive to evoke certain behavior. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. An object is hence an \emph{instance} of a class. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. The inheriting class is called the \emph{subclass}, the other the \emph{superclass}.
 
@@ -69,22 +79,27 @@ An \emph{object-oriented} programming language is one that has these three conce
 
 Stemming from the term \textbf{Lis}t \textbf{P}rocessor, Lisp is a programming language in which \emph{everything is a list}. This means that there is \emph{no discernment between data and code}. Hence an expression such as \mintinline{lisp}{(plus 3 4)} is without context nothing more than a "meaningless" listing of the "meaningless" expressions \mintinline{lisp}{plus}, \mintinline{lisp}{3}, and \mintinline{lisp}{4}. An expression like that only gets its meaning from an \emph{evaluation} by the interpreter which considers it in a certain context. In such a context the expression \mintinline{lisp}{plus} could be a function to add the arguments it is given, but that is entirely arbitrary. 
 
-Common Lisp is a standardized version of Lisp which provides certain data types and operations. But this type system can be extended through the use of \emph{macros}, which let developers give meaning to expressions. This feature of Lisp greatly facilitates the creation \emph{Domain Specific Languages}. \cite{fowler2011domain-specific} They also form the basis of CLOS which in its entirety consists of 8 macros and 33 functions.
+Common Lisp is a standardized version of Lisp which provides certain data types and operations. But this type system can be extended through the use of \emph{macros}, which let developers give meaning to expressions. This feature of Lisp greatly facilitates the creation \emph{Domain Specific Languages} \cite{fowler2011domain-specific}. They also form the basis of CLOS which in its entirety consists of 8 macros and 33 functions.
 
+\begin{itemize}
+\item explain Macros in detail
+\item how do they work
+\item achieve to change execution direction etc
+\item give example
+\end{itemize}
 
-\textbf{explain Macros in detail?}
 
 %reasoning why before concepts: the loops and s.o. are introduced which are needed later on
 
 \subsection{History of CLOS}
 \label{sec:history}
 
-In the late 1960s, the new concept of object-orientation started to become a topic of interest for researchers in computer science. In 1986, four major attempts, namely New Flavors\footnote{Information on its predecessor Flavors can be found in \cite{Moon:1986:OPF:28697.28698}.}, CommonLoops\footnote{Information on CommonLoops can be found in \cite{Bobrow:1986:CML:28697.28700}.}, Object Lisp (LMI), and Common Objects, were made to bring that concept to the popular and easily extendable programming language Lisp. \cite{steele1993evolution} To create a standardized object system, researchers from Symbolics, Inc. and Xerox PARC met to combine their respective object systems, New Flavors and CommonLoops. \cite{demichiel1987common} The Common Lisp Object System was the result, which had been two years in the making. \cite{steele1993evolution} Important concepts, next to those described in the following \emph{Main Concepts} passage, were \emph{metaclasses}, of which regular classes are just instances, and \emph{metaobjects}, which lay the foundation for the concept of objects. \cite{kiczales1991art} The \emph{metaobject protocol} in CLOS allows the system to be written in itself. \cite{steele1993evolution} Furthermore, CLOS is portable to different LISP dialects. Examples are \emph{EIEIO}\footnote{\url{https://www.gnu.org/software/emacs/manual/html_mono/eieio.html}, accessed: 2016-07-13} for Emacs Lisp and \emph{SOS}\footnote{\url{https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-sos/}, accessed: 2016-07-13} for Scheme.
+In the late 1960s, the new concept of object-orientation started to become a topic of interest for researchers in computer science. In 1986, four major attempts, namely New Flavors\footnote{Information on its predecessor Flavors can be found in \cite{Moon:1986:OPF:28697.28698}.}, CommonLoops\footnote{Information on CommonLoops can be found in \cite{Bobrow:1986:CML:28697.28700}.}, Object Lisp (LMI), and Common Objects, were made to bring that concept to the popular and easily extendable programming language Lisp \cite{steele1993evolution}. To create a standardized object system, researchers from Symbolics, Inc. and Xerox PARC met to combine their respective object systems, New Flavors and CommonLoops \cite{demichiel1987common}. The Common Lisp Object System was the result, which had been two years in the making \cite{steele1993evolution}. Important concepts, next to those described in the following \emph{Main Concepts} passage, were \emph{metaclasses}, of which regular classes are just instances, and \emph{metaobjects}, which lay the foundation for the concept of objects. \cite{kiczales1991art} The \emph{metaobject protocol} in CLOS allows the system to be written in itself \cite{steele1993evolution}. Furthermore, CLOS is portable to different LISP dialects. Examples are \emph{EIEIO}\footnote{\url{https://www.gnu.org/software/emacs/manual/html_mono/eieio.html}, accessed: 2016-07-13} for Emacs Lisp and \emph{SOS}\footnote{\url{https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-sos/}, accessed: 2016-07-13} for Scheme.
 
 \subsection{Main Concepts}
 \label{sec:concepts}
 
-CLOS comprises concepts that are rather uncommon in modern object-oriented languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are. \cite{XXX} 
+CLOS comprises concepts that are rather uncommon in modern object-oriented languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are \cite{XXX}.  
 
 We will thus start out if a short introduction of the new macros supplied by CLOS, which we will then need to explain the aforementioned concepts.
 
@@ -135,7 +150,7 @@ In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send}
     \label{fig:genericfunction}
 \end{figure}
 
-\section{Approach}
+\section{Concept and Implementation}
 \label{sec:approach}
 
 As discussed in Section \ref{sec:oo}, object-orientation is suitable for the description of real world states of affairs. Together with its concepts, CLOS thus lends itself to the creation and maintenance of descriptions of organizational structures.
@@ -156,16 +171,6 @@ When making queries via the Lisp REPL, a simple interface should make responses 
     \label{fig:class-diagram}
 \end{figure}
 
-
-\begin{itemize}
-\item ...
-\end{itemize}
-
-
-\section{Implementation}
-\label{sec:implementation}
-
-This Section discusses the implementation of the arrangement of occupations within a university as presented in Section \ref{sec:approach}. 
 
 \begin{itemize}
 \item common classes first
@@ -225,11 +230,18 @@ This Section discusses the implementation of the arrangement of occupations with
 \label{sec:evaluation}
 
 \begin{itemize}
+\item talk about all requirements given in intro!!
 \item DSL type declaration is easily maintainable
-\item using langs like Java (?) might be problematic, give example mult inheritance: needs interfaces as shown in https://stackoverflow.com/questions/21824402/java-multiple-inheritance
 \item future work: relations between members, could be used as framework for any such structure; UI is easy 
 \end{itemize}
 
+\section{Related Work}
+\label{sec:related}
+
+\begin{itemize}
+\item using langs like Java (?) might be problematic, give example mult inheritance: needs interfaces as shown in https://stackoverflow.com/questions/21824402/java-multiple-inheritance
+\item other examples of how it can be solved + vergleich
+\end{itemize}
 
 \section{Conclusion}
 \label{sec:conclusion}
