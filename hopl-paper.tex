@@ -60,14 +60,9 @@ In this Section we will hence start out by introducing the general ideas behind 
 \subsection{Object-Oriented Languages}
 \label{sec:oo}
 
-At its core, Object Orientation is a concept in computer science, after which a program works in such a way that it is made up of individual objects that can interact with one another.  
+At its core, Object Orientation is a concept in computer science, after which a program works in such a way that it is made up of individual objects that can interact with one another. This \emph{paradigm} can be implemented into a language in different ways. But next to such variations such as prototype-based programming, the quintessential Object-Orientation style is class-based, according to \cite{wegner1987dimensions}, which we refer to in the following  definition.
 
-\begin{itemize}
-\item  according to... oop is usually...
-\item give example of p.. oo
-\end{itemize}
-
-A definition of \emph{object-oriented} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages} that it can receive to evoke certain behavior, defined by \emph{methods}. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. An object is hence an \emph{instance} of a class. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. The inheriting class is called the \emph{subclass}, the other the \emph{superclass}.
+A definition of \emph{object-oriented} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages} that it can receive to evoke certain behavior, defined by \emph{methods}. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. An object is hence an \emph{instance} of a class. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. The inheriting class is called the \emph{subclass}, the other the \emph{superclass}. \cite{wegner1987dimensions}
 
 An \emph{object-oriented} programming language is one that has these three concepts "integrated". They give programmers the ability to model human language based conceptualizations of the real world, since these are also just separations of phenomena into groups with common traits.
 
@@ -89,7 +84,7 @@ In the late 1960s, the new concept of object-orientation started to become a top
 \subsection{Main Concepts}
 \label{sec:concepts}
 
-CLOS comprises concepts that are rather uncommon in modern object-oriented languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are \cite{XXX}.  
+CLOS comprises concepts that are rather uncommon in modern object-oriented languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are \cite{cargill1993case}.  
 
 We will thus start out if a short introduction of the new macros supplied by CLOS, which we will then need to explain the aforementioned concepts.
 
@@ -156,7 +151,7 @@ When making queries via the Lisp REPL, a simple interface should make responses 
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.9\textwidth]{images/class-diagram.png}
+    \includegraphics[width=0.85\textwidth]{images/class-diagram.png}
     \caption{Excerpt from a UML class diagram of a description of the occupations within a university WIP FIX ARROWS}
     \label{fig:class-diagram}
 \end{figure}
