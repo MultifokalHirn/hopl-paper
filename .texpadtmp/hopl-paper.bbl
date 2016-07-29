@@ -1,0 +1,56 @@
+\begin{thebibliography}{10}
+
+\bibitem{Schmidt2000}
+Schmidt, G.:
+\newblock Einführung in die Organisation.
+\newblock Gabler Verlag, Wiesbaden (2000)
+
+\bibitem{young2001effective}
+Young, R.R.:
+\newblock Effective requirements practices.
+\newblock Addison-Wesley Longman Publishing Co., Inc., Boston (2001)
+
+\bibitem{demichiel1987common}
+DeMichiel, L.G., Gabriel, R.P.:
+\newblock The common lisp object system: An overview.
+\newblock In: European Conference on Object-Oriented Programming, Springer
+  (1987)  151--170
+
+\bibitem{wegner1987dimensions}
+Wegner, P.:
+\newblock Dimensions of object-based language design.
+\newblock Volume~22 of OOPLSA '87., New York, NY, USA, ACM (1987)
+
+\bibitem{fowler2011domain-specific}
+Fowler, M.:
+\newblock Domain-specific languages.
+\newblock Addison-Wesley, Upper Saddle River, NJ (2011)
+
+\bibitem{Moon:1986:OPF:28697.28698}
+Moon, D.A.:
+\newblock Object-oriented programming with flavors.
+\newblock In: Conference Proceedings on Object-oriented Programming Systems,
+  Languages and Applications. OOPLSA '86, New York, NY, USA, ACM (1986)  1--8
+
+\bibitem{Bobrow:1986:CML:28697.28700}
+Bobrow, D.G., Kahn, K., Kiczales, G., Masinter, L., Stefik, M., Zdybel, F.:
+\newblock Commonloops: Merging lisp and object-oriented programming.
+\newblock In: Conference Proceedings on Object-oriented Programming Systems,
+  Languages and Applications. OOPLSA '86, New York, NY, USA, ACM (1986)  17--29
+
+\bibitem{steele1993evolution}
+Steele~Jr, G.L., Gabriel, R.P.:
+\newblock The evolution of lisp.
+\newblock ACM SIGPLAN Notices \textbf{28} (1993)  231--270
+
+\bibitem{kiczales1991art}
+Kiczales, G., Des~Rivieres, J., Bobrow, D.G.:
+\newblock The art of the metaobject protocol.
+\newblock MIT press (1991)
+
+\bibitem{cargill1993case}
+Cargill, T.A.:
+\newblock The case against multiple inheritance in c++.
+\newblock In: The evolution of C++, MIT Press (1993)  101--109
+
+\end{thebibliography}

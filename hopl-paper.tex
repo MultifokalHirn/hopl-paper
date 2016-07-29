@@ -16,13 +16,13 @@
             14482 Potsdam \\
             Germany}
 \title{Describing Dynamic Organizational Structures \\
- through the Common Lisp Object System}
+ with the Common Lisp Object System}
 \date{\today}
 %
 \begin{document}
 \markboth{Describing Dynamic Organizational Structures \\
- through the Common Lisp Object System}{Describing Dynamic Organizational Structures \\
- through the Common Lisp Object System}
+ with the Common Lisp Object System}{Describing Dynamic Organizational Structures \\
+ with the Common Lisp Object System}
 \thispagestyle{empty}
 \vfill
 
@@ -30,7 +30,7 @@
 \maketitle
 %
 \begin{abstract}
-CLOS is an object-oriented system for Common Lisp. In this work, we present its history, as well as basic syntax, and its three main concepts of \emph{multiple inheritance}, \emph{method combination}, and \emph{generic functions}. This is done by showing their application to the domain of descriptions of organizational structures. The university is used as example use case and the implementation of a maintainable, extendable, and accessible framework to describe its structure is presented.
+CLOS is an object-oriented system for Common Lisp. In this work, we present its history, basic syntax, as well as its three main concepts of \emph{multiple inheritance}, \emph{method combination}, and \emph{generic functions}. This is done by showing their application to the domain of descriptions of organizational structures. The university is used as example use case and the implementation of a maintainable, extendable, and accessible framework to describe its structure is presented.
 
 \end{abstract}
 %
@@ -41,7 +41,7 @@ CLOS is an object-oriented system for Common Lisp. In this work, we present its 
 Organizational structures often require maintainable and easily extendable descriptions of shareholders and their roles. The \emph{Common Lisp Object System} (CLOS) with its concepts of \emph{multiple inheritance}, \emph{generic functions}, and \emph{method combination} is a tool that facilitates the creation and perpetuation of such a register of members. This work presents an overview of CLOS' history as well as its basic syntax and core concepts by employing it for the creation of a dynamic member register for a university. 
 \newline
 
-This work is structured as follows. Section \ref{sec:problem} introduces the problem of dynamic shareholder lists for organizational structures. Section \ref{sec:background} introduces CLOS, its history, and core concepts. In Section \ref{sec:approach}, CLOS is applied to the given problem, first in theory, then in practice. Section \ref{sec:evaluation} gives a short evaluation of the solution based on the given criteria, in Section \ref{sec:related}, other possible solutions are discussed, and Section \ref{sec:conclusion} concludes this work.
+This work is structured as follows. Section \ref{sec:problem} introduces the problem of dynamic shareholder lists for organizational structures. Section \ref{sec:background} introduces CLOS, its history, and core concepts. In Section \ref{sec:approach}, CLOS is applied to the given problem, first in theory, then in practice. Section \ref{sec:evaluation} gives a short evaluation of the solution based on the given criteria, in Section \ref{sec:related}, a different solution using Java is discussed, and Section \ref{sec:conclusion} concludes this work.
 
 
 \section{Problem}
@@ -54,14 +54,14 @@ Since organizations are often dynamic, such a list should also be easily \emph{m
 
 \section{Background}
 \label{sec:background}
-A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the Common Lisp Object System, an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing object-orientation \cite{demichiel1987common}. However, to understand its utilization in such a problem domain as well as the reasoning behind that, some background information will be needed first.
+A solution to the problem introduced in Section \ref{sec:problem} which would meet all the given requirements would be the employment of the Common Lisp Object System, an extension to Common Lisp\footnote{\url{https://common-lisp.net}, accessed: 2016-07-12} providing Object Orientation \cite{demichiel1987common}. However, to understand its utilization in such a problem domain, as well as the reasoning behind that, some background information will be needed first.
 
 In this Section we will hence start out by introducing the general ideas behind object-orientated programming languages, as well as the language Lisp, which is followed by a description of the three main concepts that make CLOS unique. An overview of the history of CLOS will be provided thereafter, so as to better understand its origins and historical context.
 
 \subsection{Object-Oriented Languages}
 \label{sec:oo}
 
-At its core, Object Orientation is a concept in computer science, after which a program works in such a way that it is made up of individual objects that can interact with one another. This \emph{paradigm} can be implemented into a language in different ways. But next to such variations such as prototype-based programming, the quintessential Object-Orientation style is class-based, according to \cite{wegner1987dimensions}, which we refer to in the following  definition.
+At its core, Object Orientation is a concept in computer science, after which a program works in such a way that it is made up of individual objects that can interact with one another. This \emph{paradigm} can be implemented into a language in different ways. But next to such variations such as prototype-based programming, the quintessential Object Orientation style is class-based, according to \cite{wegner1987dimensions}, which we refer to in the following  definition.
 
 A definition of \emph{object-oriented} programming languages requires a preceding explanation of the terms \emph{object}, \emph{class}, and \emph{inheritance}. \emph{Objects} have a set of \emph{attributes} that define its \emph{state}, as well as a number of \emph{messages} that it can receive to evoke certain behavior, defined by \emph{methods}. By sending such messages, objects can interact with one another. \emph{Classes} are templates for objects, so that objects of the same class can have uniform interfaces and behavior. An object is hence an \emph{instance} of a class. \emph{Inheritance} opens up the possibility to create class hierarchies, so that classes can be specializations of others and \emph{inherit} certain behavior while adding something unique. The inheriting class is called the \emph{subclass}, the other the \emph{superclass}. \cite{wegner1987dimensions}
 
@@ -75,19 +75,15 @@ Stemming from the term \textbf{Lis}t \textbf{P}rocessor, Lisp is a programming l
 Common Lisp is a standardized version of Lisp which provides certain data types and operations. But this type system can be extended through the use of \emph{macros}, which let developers give meaning to expressions. This can be demonstrated by a trivial example. By defining a macro \mintinline{lisp}{(defmacro eight () (+ 3 5))}, a programmer would be able to simply write \mintinline{lisp}{eight} instead of the actual number whenever it is needed in the code. In the \emph{macro expansion phase} during compilation, the compiler then replaces all occurrences of \mintinline{lisp}{eight} with \mintinline{lisp}{(+ 3 5)}, which, during evaluation, will turn into the desired number. This feature of the Lisp language enables programmers to interfere with evaluation orders, and also greatly facilitates the creation of \emph{Domain Specific Languages} \cite{fowler2011domain-specific}. Furthermore, they form the basis of CLOS which in its entirety consists of 8 macros and 33 functions.
 
 
-%reasoning why before concepts: the loops and s.o. are introduced which are needed later on
-
 \subsection{History of CLOS}
 \label{sec:history}
 
-In the late 1960s, the new concept of object-orientation started to become a topic of interest for researchers in computer science. In 1986, four major attempts, namely New Flavors\footnote{Information on its predecessor Flavors can be found in \cite{Moon:1986:OPF:28697.28698}.}, CommonLoops\footnote{Information on CommonLoops can be found in \cite{Bobrow:1986:CML:28697.28700}.}, Object Lisp (LMI), and Common Objects, were made to bring that concept to the popular and easily extendable programming language Lisp \cite{steele1993evolution}. To create a standardized object system, researchers from Symbolics, Inc. and Xerox PARC met to combine their respective object systems, New Flavors and CommonLoops \cite{demichiel1987common}. The Common Lisp Object System was the result, which had been two years in the making \cite{steele1993evolution}. Important concepts, next to those described in the following \emph{Main Concepts} passage, were \emph{metaclasses}, of which regular classes are just instances, and \emph{metaobjects}, which lay the foundation for the concept of objects\cite{kiczales1991art}. The \emph{metaobject protocol} in CLOS allows the system to be written in itself \cite{steele1993evolution}. Furthermore, CLOS is portable to different LISP dialects. Examples are \emph{EIEIO}\footnote{\url{https://www.gnu.org/software/emacs/manual/html_mono/eieio.html}, accessed: 2016-07-13} for Emacs Lisp and \emph{SOS}\footnote{\url{https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-sos/}, accessed: 2016-07-13} for Scheme.
+In the late 1960s, the new concept of Object Orientation started to become a topic of interest for researchers in computer science. In 1986, four major attempts, namely New Flavors\footnote{Information on its predecessor Flavors can be found in \cite{Moon:1986:OPF:28697.28698}.}, CommonLoops\footnote{Information on CommonLoops can be found in \cite{Bobrow:1986:CML:28697.28700}.}, Object Lisp (LMI), and Common Objects, were made to bring that concept to the popular and easily extendable programming language Lisp \cite{steele1993evolution}. To create a standardized object system, researchers from Symbolics, Inc. and Xerox PARC met to combine their respective object systems, New Flavors and CommonLoops \cite{demichiel1987common}. The Common Lisp Object System was the result, which had been two years in the making \cite{steele1993evolution}. Important concepts, next to those described in the following \emph{Main Concepts} passage, were \emph{metaclasses}, of which regular classes are just instances, and \emph{metaobjects}, which lay the foundation for the concept of objects\cite{kiczales1991art}. The \emph{metaobject protocol} in CLOS allows the system to be written in itself \cite{steele1993evolution}. Furthermore, CLOS is portable to different LISP dialects. Examples are \emph{EIEIO}\footnote{\url{https://www.gnu.org/software/emacs/manual/html_mono/eieio.html}, accessed: 2016-07-13} for Emacs Lisp and \emph{SOS}\footnote{\url{https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-sos/}, accessed: 2016-07-13} for Scheme.
 
 \subsection{Main Concepts}
 \label{sec:concepts}
 
-CLOS comprises concepts that are rather uncommon in modern object-oriented languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are \cite{cargill1993case}.  
-
-We will thus start out if a short introduction of the new macros supplied by CLOS, which we will then need to explain the aforementioned concepts.
+CLOS comprises concepts that are rather uncommon in modern object-oriented languages. This is, in the cases of \emph{generic functions} and \emph{method combination}, due to their specificity to the Lisp environment and, in the case of \emph{multiple inheritance}, because it can cause many problems if employed in contexts that are inappropriate, which they more often than not are \cite{cargill1993case}. We will thus start out if a short introduction of the new macros supplied by CLOS, which we will then need to explain the aforementioned concepts.
 
 
 \subsubsection{Syntax Basics}
@@ -139,7 +135,7 @@ In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send}
 \section{Approach and Implementation}
 \label{sec:approach}
 
-As discussed in Section \ref{sec:oo}, object-orientation is suitable for the description of real world states of affairs. Together with its concepts, CLOS thus lends itself to the creation and maintenance of descriptions of organizational structures.
+As discussed in Section \ref{sec:oo}, Object Orientation is suitable for the description of real world states of affairs. Together with its concepts, CLOS thus lends itself to the creation and maintenance of descriptions of organizational structures.
 
 In our solution, classes represent the roles, while an instance of such a class would be an individual member of the organization. This way, a Lisp REPL can be used for simple queries, while other Lisp-programs (such as human capital management software) could use the objects for further interaction. CLOS furthermore permits the storage of objects in SQL database systems via object-relational mappers\footnote{A list of object-relational mappers for CLOS can be found at \url{http://www.cliki.net/ORM}, missing from the list is Mito (\url{https://github.com/fukamachi/mito}), both accessed: 2016-07-18}, so that non-Lisp programs can also have easy access. Nevertheless, this work focuses on a description of the arrangement of people within an organizational structure and  an interface to query information on individuals and occupations.
 \newline
@@ -198,7 +194,7 @@ A distinction between students and staff members would make sense, since the sta
 \end{listing}
 
 
-As it is possible that a member of an organization can take on multiple roles within the structure, classes will need to be able to have multiple superclasses. An example would be the university's chairman who also happens to be a professor. In our solution, this is possible through CLOS' concept of multiple inheritance. As shown in Listing \ref{lst:chairmanprof}, \texttt{professor-chairman} would simply be a subclass of both \texttt{professor} and \texttt{chairman}\footnote{The instantiation interfaces like \mintinline{lisp}{make-professor} have been omitted to unclutter the code. In an actual implementation however they should exist as well.}. Here it is important to make sure that the order in which the superclasses are declared is in such a way that in the case of duplicate methods or attributes, the superclass named first is the one to have priority. If prioritization however is not desired, then the naming will have to be adjusted.
+As it is possible that a member of an organization can take on multiple roles within the structure, classes will need to be able to have multiple superclasses. An example would be the university's chairman who also happens to be a professor. In our solution, this is possible through CLOS' concept of multiple inheritance. As shown in Listing \ref{lst:chairmanprof}, \mintinline{lisp}{professor-chairman} would simply be a subclass of both \mintinline{lisp}{professor} and \mintinline{lisp}{chairman}\footnote{The instantiation interfaces like \mintinline{lisp}{make-professor} have been omitted to declutter the code. In an actual implementation however they should exist as well.}. Here it is important to make sure that the order in which the superclasses are declared is in such a way that in the case of duplicate methods or attributes, the superclass named first is the one to have priority. If prioritization however is not desired, then the naming will have to be adjusted.
 
 \begin{listing}[]%ht]
  \centering
@@ -218,7 +214,7 @@ As it is possible that a member of an organization can take on multiple roles wi
 \label{lst:chairmanprof}
 \end{listing}
 
-When making queries via a Lisp REPL, a simple interface should make responses that should share a common format. And since the addition of new occupations should not require any alterations to such an interface, the method combination concept would prove its usefulness. As can be seen in Listing \ref{lst:interface}, the generic function is defined first via \mintinline{lisp}{defgeneric}, and then the individual implementations for each class are defined. With \mintinline{lisp}{:after}, each additional class can concatenate a particular own behavior to the general behavior of its superclass(es).
+When making queries via a Lisp REPL\footnote{\emph{Read-Evaluate-Print Loop}}, a simple interface should make responses that should share a common format. And since the addition of new occupations should not require any alterations to such an interface, the method combination concept would prove its usefulness. As can be seen in Listing \ref{lst:interface}, the generic function is defined first via \mintinline{lisp}{defgeneric}, and then the individual implementations for each class are defined. With \mintinline{lisp}{:after}, each additional class can concatenate a particular own behavior to the general behavior of its superclass(es).
 
 \begin{listing}[]%ht]
  \centering
@@ -252,7 +248,7 @@ Figure \ref{fig:repl} demonstrates a possible interaction with the framework for
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.98\textwidth]{images/repl.png}
+    \includegraphics[width=1\textwidth]{images/repl.png}
     \caption{A screenshot of a possible interaction with the framework provided by our solution}
     \label{fig:repl}
 \end{figure}
@@ -280,11 +276,29 @@ Our solution shows that CLOS as example of Object Orientation lends itself very 
 
 Today, Object Orientation is a very popular programming concept. Therefore, a plethora of different object-oriented languages exist which could solve the presented problem in their own way. In this Section we will discuss the example of Java, a particularly popular object-oriented programming language.
 
-As Java does not support multiple inheritance, the combination of classes would need to be solved in a different manner.
+\begin{listing}[]
+\begin{minted}{java}
 
-\begin{itemize}
-\item using langs like Java (?) might be problematic, give example mult inheritance: needs interfaces as shown in https://stackoverflow.com/questions/21824402/java-multiple-inheritance
-\end{itemize}
+public interface ProfessorInterface {
+}
+
+public class Professor implements ProfessorInterface{
+}
+
+public interface ChairmanInterface {
+}
+
+public class ProfessorChairman implements ProfessorInterface, ChairmanInterface{
+}
+
+\end{minted}
+\caption{An example of multiple inheritance using Java interfaces}
+\label{lst:java}
+\end{listing}
+
+Java does not have multiple inheritance integrated as directly as CLOS does, meaning that because of the diamond problem unwanted behavior can arise during compilation\footnote{\url{https://docs.oracle.com/javase/tutorial/java/IandI/multipleinheritance.html}, accessed: 2016-07-28}. The combination of classes would thus need to be solved in a different manner. Instead, Java \emph{Interfaces} are recommended to be used to achieve a similar effect. An interface is a sort of protocol that can be used by classes. Such an interface could be used as an abstract class, and so multiple interfaces could be implemented for a class that is a combination of others. 
+
+However, such a solution can be a lot less intuitive for the programmer trying to extend the system, since adding a new occupation to the system would require to create a new class and a interface. Furthermore, it could be unclear what sort of behavior would have to be defined in the either the class or the interface. The elegant solution of method combination in CLOS would also not be present in Java. 
 
 
 \section{Conclusion}
