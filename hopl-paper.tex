@@ -30,7 +30,8 @@
 \maketitle
 %
 \begin{abstract}
-Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System Describing Dynamic Organizational Structures through the Common Lisp Object System
+CLOS is an object-oriented system for Common Lisp. In this work, we present its history, as well as basic syntax, and its three main concepts of \emph{multiple inheritance}, \emph{method combination}, and \emph{generic functions}. This is done by showing their application to the domain of descriptions of organizational structures. The university is used as example use case and the implementation of a maintainable, extendable, and accessible framework to describe its structure is presented.
+
 \end{abstract}
 %
 
@@ -197,7 +198,6 @@ A distinction between students and staff members would make sense, since the sta
 \end{listing}
 
 
-
 As it is possible that a member of an organization can take on multiple roles within the structure, classes will need to be able to have multiple superclasses. An example would be the university's chairman who also happens to be a professor. In our solution, this is possible through CLOS' concept of multiple inheritance. As shown in Listing \ref{lst:chairmanprof}, \texttt{professor-chairman} would simply be a subclass of both \texttt{professor} and \texttt{chairman}\footnote{The instantiation interfaces like \mintinline{lisp}{make-professor} have been omitted to unclutter the code. In an actual implementation however they should exist as well.}. Here it is important to make sure that the order in which the superclasses are declared is in such a way that in the case of duplicate methods or attributes, the superclass named first is the one to have priority. If prioritization however is not desired, then the naming will have to be adjusted.
 
 \begin{listing}[]%ht]
@@ -218,8 +218,7 @@ As it is possible that a member of an organization can take on multiple roles wi
 \label{lst:chairmanprof}
 \end{listing}
 
-When making queries via a Lisp REPL, a simple interface should make responses that should share a common format. And since the addition of new occupations should not require any alterations to such an interface, the method combination concept would prove its usefulness. 
-
+When making queries via a Lisp REPL, a simple interface should make responses that should share a common format. And since the addition of new occupations should not require any alterations to such an interface, the method combination concept would prove its usefulness. As can be seen in Listing \ref{lst:interface}, the generic function is defined first via \mintinline{lisp}{defgeneric}, and then the individual implementations for each class are defined. With \mintinline{lisp}{:after}, each additional class can concatenate a particular own behavior to the general behavior of its superclass(es).
 
 \begin{listing}[]%ht]
  \centering
@@ -230,7 +229,7 @@ When making queries via a Lisp REPL, a simple interface should make responses th
 (defmethod get-info ((p person))
     (format t "Name: ~d ~% Occupation: ~d ~% Age: ~d ~% 
      Address: ~d ~% Date of Registration: ~d ~% "
-         (name p) (class-of p) (age p) (address p) (registration-date p)))
+     (name p) (class-of p) (age p) (address p) (registration-date p)))
 
 (defmethod get-info :after ((s student))
     (format t "ECTS Points: ~d ~% " (ects-points s)))
@@ -262,35 +261,38 @@ Figure \ref{fig:repl} demonstrates a possible interaction with the framework for
 \section{Evaluation}
 \label{sec:evaluation}
 
-In Section \ref{sec:problem} we defined as main requirements the three  evolution qualities \emph{maintainability}, \emph{extensibility}, and \emph{accessibility}. In this Section we will discuss, whether and to what degree the solution given in Section \ref{sec:approach} can satisfy them.
+In Section \ref{sec:problem} we defined as main requirements the three evolution qualities \emph{maintainability}, \emph{extensibility}, and \emph{accessibility}. In this Section we will discuss, whether and to what extent the solution given in Section \ref{sec:approach} can satisfy them.
 
+\subsubsection{Maintainability}
+The \mintinline{lisp}{make-CLASSNAME} functions provide an easy to use interface to add new members to the system. The only issue here would be the yet non-existent man-page to exactly know which parameters a class has and in what order they are supposed to be designed. A UI would make this a lot easier. However, the \mintinline{lisp}{age} attribute for example is not useful in such a system, since the value will inevitably change over time. To keep it maintainable, a \mintinline{lisp}{date-of-birth} attribute would be more appropriate. 
 
-\begin{itemize}
-\item talk about all requirements given in intro!!
-\item the system has errors, age should be date etc. -> important
-\item DSL type declaration is easily maintainable
-\item what could be done better: relations between members, could be used as framework for any such structure; UI is easy 
-\item come to conclusion that CLOS is a powerful tool in lisp environments, however lisp is not common anymore
-\end{itemize}
+\subsubsection{Extensibility} 
+As CLOS makes it easy to add new classes and combine them, new types of occupations within an organizational structure can be easily added. The concept of inheritance in object-oriented languages facilitates especially. The method combination furthermore facilitated the creation of human readable output functions, which can be concatenated for any additional attribute of a new class. 
+
+\subsubsection{Accessibility}
+Since CLOS is standardized, any Lisp program can make use of the proposed framework. Objects can be reused in other programs and though the help of object-relational mappers, other non-Lisp programs can also access the information within the system.
+\newline
+
+Our solution shows that CLOS as example of Object Orientation lends itself very well to the description of real world states-of-affairs. It is a powerful extension of the Lisp programming language and gave a good impression of what was to expect from object-oriented languages to come.
 
 \section{Related Work}
 \label{sec:related}
 
+Today, Object Orientation is a very popular programming concept. Therefore, a plethora of different object-oriented languages exist which could solve the presented problem in their own way. In this Section we will discuss the example of Java, a particularly popular object-oriented programming language.
+
+As Java does not support multiple inheritance, the combination of classes would need to be solved in a different manner.
+
 \begin{itemize}
 \item using langs like Java (?) might be problematic, give example mult inheritance: needs interfaces as shown in https://stackoverflow.com/questions/21824402/java-multiple-inheritance
-\item 
-\item other examples of how it can be solved + vergleich
 \end{itemize}
 
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-\begin{itemize}
-\item talk about what has been done
-\item repeat especially the eval
-\item  
-\end{itemize} 
+In this work we have discussed the object-oriented Lisp system CLOS by applying it to the problem of member registers of organizations, based on the example of a university. 
+
+First, an introduction to the concepts behind CLOS was given, as well as a description of its history, and its three main ideas, namely \emph{multiple inheritance}, \emph{method combination}, and \emph{generic functions}, were presented. Based on the qualities of \emph{maintainability}, \emph{extensibility}, and \emph{accessibility}, the solution was evaluated and the example of Java as alternative tool was discussed.
 
 \newpage
 \nocite{*}
@@ -305,11 +307,6 @@ In Section \ref{sec:problem} we defined as main requirements the three  evolutio
 
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
-
-;;;----------------------------------------
-;;;The Framework as described in Section 4
-;;;----------------------------------------
-
 (defclass person ()
   ((name :accessor name
          :initarg :name)
@@ -324,11 +321,6 @@ In Section \ref{sec:problem} we defined as main requirements the three  evolutio
  ((ects-points :accessor ects-points
            :initarg :ects-points)))
 
-(defun make-student (name age address registration-date ects-points)
- (make-instance 'student :name name :age age :address address
-    :registration-date registration-date :ects-points ects-points))
-
-
 (defclass staffmember (person)
   ((bank-details :accessor bank-details
             :initarg :bank-details)))
@@ -337,28 +329,39 @@ In Section \ref{sec:problem} we defined as main requirements the three  evolutio
   ((chair :accessor chair
             :initarg :chair)))
 
-(defun make-professor (name age address registration-date bank-details chair)
-  (make-instance 'professor :name name :age age :address address
-    :registration-date registration-date :bank-details bank-details :chair chair))
-
 (defclass chairman (staffmember)
   ((share :accessor share
             :initarg :share)))
+
+(defclass professor-chairman (professor chairman) () )
+\end{minted}
+\caption{The implementation of the classes}
+\label{lst:entire-implementation}
+\end{listing}
+
+\begin{listing}[]%ht]
+\begin{minted}{lisp}
+
+(defun make-student (name age address registration-date ects-points)
+ (make-instance 'student :name name :age age :address address
+    :registration-date registration-date :ects-points ects-points))
+
+(defun make-professor (name age address registration-date bank-details chair)
+  (make-instance 'professor :name name :age age :address address
+    :registration-date registration-date :bank-details bank-details :chair chair))
 
 (defun make-chairman (name age address registration-date bank-details share)
   (make-instance 'chairman :name name :age age :address address
     :registration-date registration-date :bank-details bank-details :share share))
 
-(defclass professor-chairman (professor chairman) () )
-
 (defun make-professor-chairman (name age address registration-date bank-details chair share)
   (make-instance 'professor-chairman :name name :age age :address address
     :registration-date registration-date :bank-details bank-details :chair chair :share share))
-
 \end{minted}
-\caption{The implementation of the classes}
-\label{lst:entire-implementation}
+\caption{The instantiation functions}
+\label{lst:insts}
 \end{listing}
+
 
 
 \begin{listing}[]%ht]
@@ -370,7 +373,7 @@ In Section \ref{sec:problem} we defined as main requirements the three  evolutio
 (defmethod get-info ((p person))
     (format t "Name: ~d ~% Occupation: ~d ~% Age: ~d ~% 
      Address: ~d ~% Date of Registration: ~d ~% "
-         (name p) (class-of p) (age p) (address p) (registration-date p)))
+     (name p) (class-of p) (age p) (address p) (registration-date p)))
 
 (defmethod get-info :after ((s student))
     (format t "ECTS Points: ~d ~% " (ects-points s)))
@@ -393,13 +396,12 @@ In Section \ref{sec:problem} we defined as main requirements the three  evolutio
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
 
-;;;-------------------------------------
-;;; Examples for testing
-;;;-------------------------------------
+(defvar *Max* 
+   (make-student "Max Mustermann" 22 "Beispiel Strasse 1" 21222011 0))
 
-(defvar *Max* (make-student "Max Mustermann" 22 "Beispiel Strasse 1" 21222011 0))
-
-(defvar *Maria* (make-professor-chairman "Maria Musterfrau" 52 "Schoene Strasse 2" 21222010 "IBAN:1234" "Software Architecture" "50%"))
+(defvar *Maria* 
+   (make-professor-chairman "Maria Musterfrau" 52 "Schoene Strasse 2" 
+    21222010 "IBAN:1234" "Software Architecture" "50%"))
 
 (get-info *Max*)
 (format t "~%--------------~%~%")
