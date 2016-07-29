@@ -155,16 +155,17 @@ A common organizational structure is the university, which we will use to exempl
 Since all members have a certain set of common attributes such as name and address, an abstract class \mintinline{lisp}{person} for all members to inherit from will have to exist. Listing \ref{lst:person} shows a possible implementation of such a class. Even though \mintinline{lisp}{person} is an abstract class, it is still possible to instantiate it. However, since such a \mintinline{lisp}{person} object would not provide any meaning to the overall system, our approach omits any helper method in the form of \mintinline{lisp}{make-person} or the like.
 
 \begin{listing}[]%ht]
+    \centering
 \begin{minted}{lisp}
 
 (defclass person ()
-  ((name :accessor person-name
+  ((name :accessor name
          :initarg :name)
-   (age :accessor person-age ;is the person-* accessor not kind of stupid?
+   (age :accessor age
         :initarg :age)
-   (address :accessor person-address
+   (address :accessor address
          :initarg :address)
-   (registration-date :accessor person-registration-date
+   (registration-date :accessor registration-date
          :initarg :registration-date)))
 \end{minted}
 \caption{The basic \mintinline{lisp}{person} class}
@@ -174,19 +175,20 @@ Since all members have a certain set of common attributes such as name and addre
 A distinction between students and staff members would make sense, since the staff needs bank details for compensations. In reality however, this line is blurred by multiple inheritance, as a student might also at some point become a research assistant. A \mintinline{lisp}{staffmember} class would, just like \mintinline{lisp}{person}, again be abstract to facilitate the centralization of common attributes and behaviors. Such a distinction will obviously be unnecessary in other organizations, but it helps in making sense of the inherent structures. Listing \ref{lst:student} shows the definition of the \mintinline{lisp}{student} and \mintinline{lisp}{staffmember} classes, which both inherit from student. As \mintinline{lisp}{student} is not an abstract class, it is useful to create an easy-to-use \mintinline{lisp}{make-student} function, since the \mintinline{lisp}{make-instance} function can be felt to be rather tedious to work with.
 
 \begin{listing}[]%ht]
+ \centering
 \begin{minted}{lisp}
 
 (defclass student (person)
- ((ects-points :accessor student-ects-points
+ ((ects-points :accessor ects-points
            :initarg :ects-points)))
 
-(defun make-student (name age subject address registration-date ects-points)
+(defun make-student (name age address registration-date ects-points)
  (make-instance 'student :name name :age age :address address
     :registration-date registration-date :ects-points ects-points))
     
     
 (defclass staffmember (person)
-  ((bank-details :accessor staffmember-bank-details
+  ((bank-details :accessor bank-details
             :initarg :bank-details)))
 
 \end{minted}
@@ -196,22 +198,65 @@ A distinction between students and staff members would make sense, since the sta
 
 
 
-As it is possible that the university's chairman is also a professor, occupations need to be combinable. This is possible through multiple inheritance so that \texttt{ProfessorChairman} would simply be a subclass of both \texttt{Professor} and \texttt{Chairman}, as described in Section \ref{sec:concepts}. 
+As it is possible that a member of an organization can take on multiple roles within the structure, classes will need to be able to have multiple superclasses. An example would be the university's chairman who also happens to be a professor. In our solution, this is possible through CLOS' concept of multiple inheritance. As shown in Listing \ref{lst:chairmanprof}, \texttt{professor-chairman} would simply be a subclass of both \texttt{professor} and \texttt{chairman}\footnote{The instantiation interfaces like \mintinline{lisp}{make-professor} have been omitted to unclutter the code. In an actual implementation however they should exist as well.}. Here it is important to make sure that the order in which the superclasses are declared is in such a way that in the case of duplicate methods or attributes, the superclass named first is the one to have priority. If prioritization however is not desired, then the naming will have to be adjusted.
 
+\begin{listing}[]%ht]
+ \centering
+\begin{minted}{lisp}
+(defclass professor (staffmember)
+  ((chair :accessor chair
+            :initarg :chair)))
 
+(defclass chairman (staffmember)
+  ((share :accessor share
+            :initarg :share)))
+
+(defclass professor-chairman (professor chairman) () )
+
+\end{minted}
+\caption{The definition of the \mintinline{lisp}{professor}, \mintinline{lisp}{chairman}, and \mintinline{lisp}{professor-chairman} classes}
+\label{lst:chairmanprof}
+\end{listing}
 
 When making queries via a Lisp REPL, a simple interface should make responses that should share a common format. And since the addition of new occupations should not require any alterations to such an interface, the method combination concept would prove its usefulness. 
 
 
+\begin{listing}[]%ht]
+ \centering
+\begin{minted}{lisp}
+(defgeneric get-info (person)
+      (:documentation "Returns data on all attributes."))
 
-\begin{itemize}
-\item relationships?
-\item add chair class?
-\item function for creation of student in REPL?
+(defmethod get-info ((p person))
+    (format t "Name: ~d ~% Occupation: ~d ~% Age: ~d ~% 
+     Address: ~d ~% Date of Registration: ~d ~% "
+         (name p) (class-of p) (age p) (address p) (registration-date p)))
 
-\end{itemize}
+(defmethod get-info :after ((s student))
+    (format t "ECTS Points: ~d ~% " (ects-points s)))
 
+(defmethod get-info :after ((s staffmember))
+    (format t "Bank Details: ~d ~% " (bank-details s)))
 
+(defmethod get-info :after ((p professor))
+    (format t "Chair: ~d ~% " (chair p)))
+
+(defmethod get-info :after ((c chairman))
+    (format t "Share: ~d ~% " (share c)))
+
+\end{minted}
+\caption{The functions for human readable output WIP}
+\label{lst:interface}
+\end{listing}
+
+Figure \ref{fig:repl} demonstrates a possible interaction with the framework for describing organizational structures.
+
+\begin{figure}[]
+    \centering
+    \includegraphics[width=0.98\textwidth]{images/repl.png}
+    \caption{A screenshot of a possible interaction with the framework provided by our solution}
+    \label{fig:repl}
+\end{figure}
 
 
 \section{Evaluation}
@@ -222,6 +267,7 @@ In Section \ref{sec:problem} we defined as main requirements the three  evolutio
 
 \begin{itemize}
 \item talk about all requirements given in intro!!
+\item the system has errors, age should be date etc. -> important
 \item DSL type declaration is easily maintainable
 \item what could be done better: relations between members, could be used as framework for any such structure; UI is easy 
 \item come to conclusion that CLOS is a powerful tool in lisp environments, however lisp is not common anymore
@@ -260,11 +306,109 @@ In Section \ref{sec:problem} we defined as main requirements the three  evolutio
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
 
-(some code here)
+;;;----------------------------------------
+;;;The Framework as described in Section 4
+;;;----------------------------------------
+
+(defclass person ()
+  ((name :accessor name
+         :initarg :name)
+   (age :accessor age
+        :initarg :age)
+   (address :accessor address
+         :initarg :address)
+   (registration-date :accessor registration-date
+         :initarg :registration-date)))
+
+(defclass student (person)
+ ((ects-points :accessor ects-points
+           :initarg :ects-points)))
+
+(defun make-student (name age address registration-date ects-points)
+ (make-instance 'student :name name :age age :address address
+    :registration-date registration-date :ects-points ects-points))
+
+
+(defclass staffmember (person)
+  ((bank-details :accessor bank-details
+            :initarg :bank-details)))
+
+(defclass professor (staffmember)
+  ((chair :accessor chair
+            :initarg :chair)))
+
+(defun make-professor (name age address registration-date bank-details chair)
+  (make-instance 'professor :name name :age age :address address
+    :registration-date registration-date :bank-details bank-details :chair chair))
+
+(defclass chairman (staffmember)
+  ((share :accessor share
+            :initarg :share)))
+
+(defun make-chairman (name age address registration-date bank-details share)
+  (make-instance 'chairman :name name :age age :address address
+    :registration-date registration-date :bank-details bank-details :share share))
+
+(defclass professor-chairman (professor chairman) () )
+
+(defun make-professor-chairman (name age address registration-date bank-details chair share)
+  (make-instance 'professor-chairman :name name :age age :address address
+    :registration-date registration-date :bank-details bank-details :chair chair :share share))
 
 \end{minted}
-\caption{The implementation of the described system in full WIP}
+\caption{The implementation of the classes}
 \label{lst:entire-implementation}
+\end{listing}
+
+
+\begin{listing}[]%ht]
+\begin{minted}{lisp}
+
+(defgeneric get-info (person)
+      (:documentation "Returns data on all attributes."))
+
+(defmethod get-info ((p person))
+    (format t "Name: ~d ~% Occupation: ~d ~% Age: ~d ~% 
+     Address: ~d ~% Date of Registration: ~d ~% "
+         (name p) (class-of p) (age p) (address p) (registration-date p)))
+
+(defmethod get-info :after ((s student))
+    (format t "ECTS Points: ~d ~% " (ects-points s)))
+
+(defmethod get-info :after ((s staffmember))
+    (format t "Bank Details: ~d ~% " (bank-details s)))
+
+(defmethod get-info :after ((p professor))
+    (format t "Chair: ~d ~% " (chair p)))
+
+(defmethod get-info :after ((c chairman))
+    (format t "Share: ~d ~% " (share c)))
+
+\end{minted}
+\caption{The implementation of the human readable interface}
+\label{lst:implementation}
+\end{listing}
+
+
+\begin{listing}[]%ht]
+\begin{minted}{lisp}
+
+;;;-------------------------------------
+;;; Examples for testing
+;;;-------------------------------------
+
+(defvar *Max* (make-student "Max Mustermann" 22 "Beispiel Strasse 1" 21222011 0))
+
+(defvar *Maria* (make-professor-chairman "Maria Musterfrau" 52 "Schoene Strasse 2" 21222010 "IBAN:1234" "Software Architecture" "50%"))
+
+(get-info *Max*)
+(format t "~%--------------~%~%")
+(get-info *Maria*)
+
+
+\end{minted}
+\caption{Examples to test the framework}
+\label{lst:examples}
 \end{listing}
 
 \end{document}
