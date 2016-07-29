@@ -130,40 +130,29 @@ In Flavors, messages were sent to objects by calling the \mintinline{lisp}{send}
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.5\textwidth]{images/genericfunction.png}
+    \includegraphics[width=0.53\textwidth]{images/genericfunction.png}
     \caption{The global interface provided by the generic function}
     \label{fig:genericfunction}
 \end{figure}
 
-\section{Concept and Implementation}
+\section{Approach and Implementation}
 \label{sec:approach}
 
 As discussed in Section \ref{sec:oo}, object-orientation is suitable for the description of real world states of affairs. Together with its concepts, CLOS thus lends itself to the creation and maintenance of descriptions of organizational structures.
 
-In our solution, classes represent the roles, while an instance of such a class would be an individual member. This way, a Lisp REPL can be used for simple queries, while other Lisp-programs (such as human capital management software) can use the objects for further interaction. CLOS furthermore permits the storage of the objects in SQL database systems via object-relational mappers\footnote{A list of object-relational mappers for CLOS can be found at \url{http://www.cliki.net/ORM}, missing from the list is Mito (\url{https://github.com/fukamachi/mito}), both accessed: 2016-07-18}, so that non-Lisp programs can also have easy access. Nevertheless, this work focuses on a description of the arrangement of people within an organizational structure and  an interface to query information on individuals and occupations.
+In our solution, classes represent the roles, while an instance of such a class would be an individual member of the organization. This way, a Lisp REPL can be used for simple queries, while other Lisp-programs (such as human capital management software) could use the objects for further interaction. CLOS furthermore permits the storage of objects in SQL database systems via object-relational mappers\footnote{A list of object-relational mappers for CLOS can be found at \url{http://www.cliki.net/ORM}, missing from the list is Mito (\url{https://github.com/fukamachi/mito}), both accessed: 2016-07-18}, so that non-Lisp programs can also have easy access. Nevertheless, this work focuses on a description of the arrangement of people within an organizational structure and  an interface to query information on individuals and occupations.
 \newline
-
-A common organizational structure is the university. As new students and chairs come and go, new roles and corresponding individuals will have to be accommodated for. The following is an abstract description of a possible arrangement of roles which is visualized in Figure \ref{fig:class-diagram}. Since all members have a certain set of common attributes such as name and adresse, an abstract class \texttt{Person} for all members to inherit from will have to exist. As it is possible that the university's chairman is also a professor, occupations need to be combinable. This is possible through multiple inheritance so that \texttt{ProfessorChairman} would simply be a subclass of both \texttt{Professor} and \texttt{Chairman}, as described in Section \ref{sec:concepts}. 
-
-A distinction between students and staff would make sense, since the staff needs bank details for compensations. In reality however, this line is blurred by multiple inheritance, as a student might also be a research assistant.
-
-When making queries via the Lisp REPL, a simple interface should make responses that should share a common format. And since the addition of new occupations should not require any alterations to such an interface, the method combination concept would prove its usefulness. 
 
 \begin{figure}[]
     \centering
-    \includegraphics[width=0.85\textwidth]{images/class-diagram.png}
-    \caption{Excerpt from a UML class diagram of a description of the occupations within a university WIP FIX ARROWS}
+    \includegraphics[width=0.83\textwidth]{images/class-diagram.png}
+    \caption{Excerpt from a UML class diagram of a description of the occupations within a university}
     \label{fig:class-diagram}
 \end{figure}
 
+A common organizational structure is the university, which we will use to exemplify our approach to the general problem presented in Section \ref{sec:problem}. As new students and chairs come and go, new roles and corresponding individuals will have to be accommodated for. The following is an abstract description of a possible arrangement of roles which is visualized in Figure \ref{fig:class-diagram}. 
 
-\begin{itemize}
-\item common classes first
-\item relationships?
-\item add chair class?
-\item function for creation of student in REPL?
-
-\end{itemize}
+Since all members have a certain set of common attributes such as name and address, an abstract class \mintinline{lisp}{person} for all members to inherit from will have to exist. Listing \ref{lst:person} shows a possible implementation of such a class. Even though \mintinline{lisp}{person} is an abstract class, it is still possible to instantiate it. However, since such a \mintinline{lisp}{person} object would not provide any meaning to the overall system, our approach omits any helper method in the form of \mintinline{lisp}{make-person} or the like.
 
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
@@ -177,38 +166,52 @@ When making queries via the Lisp REPL, a simple interface should make responses 
          :initarg :address)
    (registration-date :accessor person-registration-date
          :initarg :registration-date)))
-
-(defun make-person (name age adress registration-date)
-  (make-instance 'person :name name :age age :address address
-     :registration-date registration-date))
-     
 \end{minted}
-\caption{The basic \mintinline{lisp}{person} class WIP}
-\label{lst:clossyntax}
+\caption{The basic \mintinline{lisp}{person} class}
+\label{lst:person}
 \end{listing}
+
+A distinction between students and staff members would make sense, since the staff needs bank details for compensations. In reality however, this line is blurred by multiple inheritance, as a student might also at some point become a research assistant. A \mintinline{lisp}{staffmember} class would, just like \mintinline{lisp}{person}, again be abstract to facilitate the centralization of common attributes and behaviors. Such a distinction will obviously be unnecessary in other organizations, but it helps in making sense of the inherent structures. Listing \ref{lst:student} shows the definition of the \mintinline{lisp}{student} and \mintinline{lisp}{staffmember} classes, which both inherit from student. As \mintinline{lisp}{student} is not an abstract class, it is useful to create an easy-to-use \mintinline{lisp}{make-student} function, since the \mintinline{lisp}{make-instance} function can be felt to be rather tedious to work with.
 
 \begin{listing}[]%ht]
 \begin{minted}{lisp}
-(defclass staffmember (person)
-  ((bank-details :accessor staffmember-bank-details
-            :initarg :bank-details)))
-
-(defun make-staffmember (name age subject adress registration-date bank-details)
-  (make-instance 'staffmember :name name :age age :address address
-     :registration-date registration-date :bank-details bank-details))
 
 (defclass student (person)
  ((ects-points :accessor student-ects-points
            :initarg :ects-points)))
 
-(defun make-student (name age subject adress registration-date ects-points)
+(defun make-student (name age subject address registration-date ects-points)
  (make-instance 'student :name name :age age :address address
     :registration-date registration-date :ects-points ects-points))
+    
+    
+(defclass staffmember (person)
+  ((bank-details :accessor staffmember-bank-details
+            :initarg :bank-details)))
 
 \end{minted}
-\caption{The interface to access the data in a human readable manner WIP}
-\label{lst:clossyntax}
+\caption{The definition of the \mintinline{lisp}{student} and \mintinline{lisp}{staffmember} classes}
+\label{lst:student}
 \end{listing}
+
+
+
+As it is possible that the university's chairman is also a professor, occupations need to be combinable. This is possible through multiple inheritance so that \texttt{ProfessorChairman} would simply be a subclass of both \texttt{Professor} and \texttt{Chairman}, as described in Section \ref{sec:concepts}. 
+
+
+
+When making queries via a Lisp REPL, a simple interface should make responses that should share a common format. And since the addition of new occupations should not require any alterations to such an interface, the method combination concept would prove its usefulness. 
+
+
+
+\begin{itemize}
+\item relationships?
+\item add chair class?
+\item function for creation of student in REPL?
+
+\end{itemize}
+
+
 
 
 \section{Evaluation}
